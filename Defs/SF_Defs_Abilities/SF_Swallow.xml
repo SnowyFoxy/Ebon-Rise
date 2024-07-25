@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Defs>
+	<abilityDef>
+		<AbilityDef>
+			<defName>SF_Swallow</defName>
+			<label>Swallow</label>
+			<description>Leap onto a target and begin digesting it.</description>
+			<cooldownTicksRange>60</cooldownTicksRange>
+			<!-- 60 seconds -->
+			<jobDef>CastJump</jobDef>
+			<ai_IsOffensive>true</ai_IsOffensive>
+			<aiCanUse>true</aiCanUse>
+			<verbProperties>
+				<verbClass>Verb_SF_CastAbilitySwallow</verbClass>
+				<label>consume leap</label>
+				<range>9.9</range>
+				<requireLineOfSight>true</requireLineOfSight>
+				<warmupTime>0.25</warmupTime>
+				<soundCast></soundCast>
+				<soundLanding></soundLanding>
+				<targetParams>
+					<canTargetBuildings>false</canTargetBuildings>
+				</targetParams>
+			</verbProperties>
+			<comps>
+				<li Class="CompProp_Swallow">
+					<maxBodySize>2.5</maxBodySize>
+				</li>
+			</comps>
+		</AbilityDef>
+	</abilityDef>
+</Defs>

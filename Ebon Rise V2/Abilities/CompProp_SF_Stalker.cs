@@ -1,7 +1,7 @@
 ﻿using RimWorld;
 using Verse;
 
-class CompProperties_Swallow : CompProperties
+public class CompProperties_SF_Stalker : CompProperties
 {
     [MustTranslate]
     public string messageSwallowed;

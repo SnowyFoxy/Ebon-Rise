@@ -44,9 +44,11 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Abilities\CompProp_Swallow.cs" />
-    <Compile Include="Abilities\CompSwallow.cs" />
-    <Compile Include="Class1.cs" />
+    <Compile Include="Abilities\CompAbilityEffect_SF_Swallow.cs" />
+    <Compile Include="Abilities\CompProperties_SF_Swallow.cs" />
+    <Compile Include="Abilities\CompProp_SF_Stalker.cs" />
+    <Compile Include="Abilities\Comp_SF_Stalker.cs" />
+    <Compile Include="Abilities\SF_DefOf.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
