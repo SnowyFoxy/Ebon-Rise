@@ -24,7 +24,6 @@
 
 
 		<race>
-			<body>SF_RifStalker_Body</body>
 			
 			<!--        Mental Stuff         -->
 			<alwaysViolent>false</alwaysViolent>

@@ -4,6 +4,7 @@ using UnityEngine;
 using Verse;
 using Verse.AI;
 using Verse.AI.Group;
+using SF_DefOF;
 
 public class Comp_SF_Stalker : ThingComp, IThingHolder
 {
@@ -18,6 +19,8 @@ public class Comp_SF_Stalker : ThingComp, IThingHolder
 
     private bool wasDrafted;
 
+    public bool Swallowed => SwallowedThing != null;
+
     public Thing SwallowedThing
     {
         get
@@ -31,7 +34,6 @@ public class Comp_SF_Stalker : ThingComp, IThingHolder
     {
         get
         {
-            Thing SwallowedThing = SwallowedThing;
             if (SwallowedThing == null)
             {
                 return null;
@@ -99,8 +101,38 @@ public class Comp_SF_Stalker : ThingComp, IThingHolder
 
     public void StartSwallow(IntVec3 origin, LocalTargetInfo target)
     {
-        if (target.HasThing && target.Thing is Pawn { Spawned: not false} pawn)
+        if (target.HasThing && target.Thing is Pawn { Spawned: not false } pawn)
+        {
+            pawn.DeSpawn();
+            innerContainer.TryAdd(pawn);
+            Pawn.jobs.StartJob(JobMaker.MakeJob(SF_DefOf.SF_Stalker_swallow), JobCondition.InterruptForced);
+            if (!Props.messageSwallowed.NullOrEmpty() && pawn.Faction == Faction.OfPlayer)
+            {
+                Messages.Message(Props.messageSwallowed.Formatted(pawn.Named("PAWN")), Pawn, MessageTypeDefOf.NegativeEvent);
+            }
+            Pawn.Drawer.renderer.SetAllGraphicsDirty();
+            Find.BattleLog.Add(new BattleLogEntry_Event(pawn, RulePackDefOf.Event_DevourerConsumeLeap, Pawn));
+        }
+        else
+        {
+            Pawn.abilities.GetAbility(SF_AbilityDefOf.SF_Stalker_Swallow).ResetCooldown();
+        }
     }
+    public void StartDigesting(IntVec3 origin, LocalTargetInfo target)
+    {
+        if (target.HasThing && target.Thing is Pawn { Spawned: not false } pawn)
+        {
+            DamageInfo dinfo = new DamageInfo(DamageDefOf.AcidBurn,);
+        }
+    }
+    public void CompleteSwallow()
+    {
+        if (Swallowed)
+        {
+            
+        }
+    }
+    
 }
 
 

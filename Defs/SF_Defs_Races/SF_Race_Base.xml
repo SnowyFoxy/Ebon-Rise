@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Defs>
-	<ThingDef ParentName="BasePawn" Name="SF_BaseRace">
+	<ThingDef ParentName="BasePawn" Name="SF_BaseRace" Abstract="True">
+		<defName>SF_BodyRace_def</defName>
 		<comps>
 			<!--
 			Add once the custom swallow configuration has been implemented. 

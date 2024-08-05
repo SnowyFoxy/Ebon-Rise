@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Defs>
-	<PawnKindDef Name="SF_Entinty_Base" abstract="True" MayRequire="Ludeon.RimWorld.Anomaly">
+	<PawnKindDef Name="SF_Entinty_Base" Abstract="True" MayRequire="Ludeon.RimWorld.Anomaly">
+		<defName>SF_EntityBase</defName>
 		<immuneToGameConditionEffects>True</immuneToGameConditionEffects>
 		<canArriveManhunter>false</canArriveManhunter>
 		<abilities>
 			<li>SF_Swallow</li>
-		</abilities>				
+		</abilities>
 	</PawnKindDef>
 </Defs>
