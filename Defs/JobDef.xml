@@ -1,0 +1,9 @@
+<Defs>
+    <JobDef>
+        <defName>SF_Stalker_Swallow</defName>
+        <driverClass>JobDriver_SF_Swallow</driverClass>
+        <checkOverrideOnDamage>Never</checkOverrideOnDamage>
+        <casualInterruptible>false</casualInterruptible>
+        <playerInterruptible>false</playerInterruptible>
+    </JobDef>
+</Defs>

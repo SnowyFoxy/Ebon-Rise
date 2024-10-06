@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Defs>
-	<BodyDef Name="SF_BaseBody">
-		<defName>SF_Base_Body</defName>
-		<label>SF_Base_Body</label>
+	<BodyDef>
+		<defName>SF_RifStalker_Body</defName>
+		<label>SF_Body_RiftStalker</label>
 		<corePart>
 			<def>MovingBody</def>
 			<height>Middle</height>
@@ -11,6 +11,11 @@
 				<li>
 					<def>Tail</def>
 					<customLabel>Left Tail</customLabel>
+					<coverage>0.07</coverage>
+				</li>
+				<li>
+					<def>Tail</def>
+					<customLabel>Middle Tail</customLabel>
 					<coverage>0.07</coverage>
 				</li>
 				<li>

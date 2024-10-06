@@ -36,7 +36,7 @@ public class CompProperties_SF_Stalker : CompProperties
 
     public CompProperties_SF_Stalker()
     {
-        compClass = typeof(CompSwallow);
+        compClass = typeof(Comp_SF_Stalker);
     }
 
 }

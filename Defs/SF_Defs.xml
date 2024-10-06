@@ -1,13 +1,18 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <Defs>
-	<PawnKindDef ParentName="SF_Entinty_Base" Abstract="True">
-		<defName>SF_Riftstalker_Base</defName>
+	<PawnKindDef>
+		<defName>SF_RiftStalker</defName>
+		<label>Rift Stalker</label>
 		<race>SF_RiftStalker</race>
 		<description>An entity appears as if from the shadows itself. Its four glowing eyes peering into the surroundings as it stalks the area. The creature can appear one moment only to vanish in the next.
 
 			The Cloaked Stalker appears from a shadowy rift before turning invisible, stalking pawns to feed its relentless hunger. However, there is an intelligence behind those eyes. Perhaps you can appease its hunger and gain its favor?</description>
-
+		<defaultFactionType>Entities</defaultFactionType>
+		<immuneToGameConditionEffects>true</immuneToGameConditionEffects>
+		
 		<combatPower>250</combatPower>
+		<canArriveManhunter>false</canArriveManhunter>
+		<overrideDebugActionCategory>Entity</overrideDebugActionCategory>
 		<lifeStages>
 			<li>
 
@@ -41,5 +46,9 @@
 				</dessicatedBodyGraphicData>
 			</li>
 		</lifeStages>
-	</PawnKindDef>
+		<abilities>
+			<li>SF_Swallow</li>
+			<!--<li>ConsumeLeap_Devourer</li>-->
+		</abilities>
+	</PawnKindDef>	
 </Defs>
