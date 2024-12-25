@@ -107,25 +107,44 @@ public class Comp_SF_Stalker : ThingComp, IThingHolder
     {
         innerContainer = new ThingOwner<Thing>(this);
     }
-
+    /*
+     * Notes for me:
+     * 
+     * the local target info only has coordinates, which matches with a specific method in the class, but strangely, despite being nearly identical to the 
+     * devouer
+     * 
+     * */
     public void StartSwallow(IntVec3 origin, LocalTargetInfo target)
     {
-        Log.Message("Target.HasThing: " + target.HasThing);
-        Log.Message("Target.thing: " + target.Thing);
         if (target.HasThing && target.Thing is Pawn { Spawned: not false } pawn) 
         {
-            Log.Message("Past check");
             pawn.DeSpawn();
             innerContainer.TryAdd(pawn);
-            //ticksToSwallowed = GetSwallowedTicks() - 30;
-            Pawn.jobs.StartJob(JobMaker.MakeJob(SF_DefOf.SF_Stalker_swallow), JobCondition.InterruptForced);
+
+            //attempts to start the job for the devouring, currently, the job will immediately end after ~10 seconds and follow normal devourer procedures. WIP.
+            try 
+            {                
+                Pawn.jobs.StartJob(JobMaker.MakeJob(SF_DefOf.SF_Stalker_swallow), JobCondition.InterruptForced); 
+            }
+
+            catch 
+            { 
+                Log.Error("Could not start Job, Jobdef is null"); 
+            }
+
+
             if (!Props.messageSwallowed.NullOrEmpty() && pawn.Faction == Faction.OfPlayer)
             {
                 Messages.Message(Props.messageSwallowed.Formatted(pawn.Named("PAWN")), Pawn, MessageTypeDefOf.NegativeEvent);
             }
             Pawn.Drawer.renderer.SetAllGraphicsDirty();
             Find.BattleLog.Add(new BattleLogEntry_Event(pawn, RulePackDefOf.Event_DevourerConsumeLeap, Pawn));
+
+            //Attempted to handle image processing, TBD how to properly handle this, perhaps anim def? 
+
+            /*
             Graphic graphic = GraphicDatabase.Get<Graphic_Multi>( Props + "_middle_");
+            Log.Message("UpdatedGraphics");
             if (ContentFinder<Texture2D>.Get(Props + "_middle_"))
             {
                 if (graphic == null)
@@ -136,12 +155,12 @@ public class Comp_SF_Stalker : ThingComp, IThingHolder
                 {
                     pawn.Drawer.renderer.SetAllGraphicsDirty();
                 }
-            }
+            } */
         }
         else
         {
-            Log.Message("Failed");
-            Pawn.abilities.GetAbility(SF_AbilityDefOf.SF_SwallowAbility).ResetCooldown();
+            //have to initiate a cancelation method, if error occurs RiftStalker will try to repeatedly eat, this can cause a softlock in the game, even if RS is destroyed.
+            Pawn.abilities.GetAbility(SF_AbilityDefOf.SF_SwallowAbility).StartCooldown(5);
         }
     }
     public void StartDigesting(IntVec3 origin, LocalTargetInfo target)
@@ -157,6 +176,9 @@ public class Comp_SF_Stalker : ThingComp, IThingHolder
 
     }
     */
+
+    //Swallow is still a direct rip off Devourer, it will currently randomly apply damages based on tick rate. instead it should initiate StartDigestion() and apply either no damage or small amounts of 
+    //blunt damage to the pawn whos swallowed
     public void CompleteSwallow()
     {
         if (Swallowed)

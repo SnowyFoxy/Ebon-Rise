@@ -26,8 +26,8 @@
 		<fleshType>EntityFlesh</fleshType>
 		
 		<alwaysViolent>false</alwaysViolent>
-		<thinkTreeMain>Humanlike</thinkTreeMain> <!-- CHANGE-->
-		<thinkTreeConstant>HumanlikeConstant</thinkTreeConstant> <!-- CHANGE-->
+		<thinkTreeMain>SF_RiftStalkerThinkTree</thinkTreeMain> <!-- CHANGE-->
+		<thinkTreeConstant>DevourerConstant</thinkTreeConstant> <!-- CHANGE-->
 		<intelligence>ToolUser</intelligence>		
 		<trainability>Advanced</trainability>
 
@@ -110,7 +110,7 @@
 	</comps>
 	
 	
-	<!-- 
+ 
 	
 	<tools>
 		<li>
@@ -149,6 +149,6 @@
 				</extraMeleeDamages>
 			</surpriseAttack>
 		</li>
-	</tools>-->
+	</tools>
 </ThingDef>
 </Defs>

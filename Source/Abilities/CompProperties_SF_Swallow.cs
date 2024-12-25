@@ -8,7 +8,6 @@ using Verse;
 using JetBrains.Annotations;
 
 
-[DefOf]
 public class CompProperties_SF_Swallow : CompProperties_AbilityEffect
 {        
     public float maxBodySize = 9f;
