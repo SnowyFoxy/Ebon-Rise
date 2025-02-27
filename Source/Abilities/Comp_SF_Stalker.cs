@@ -107,13 +107,9 @@ public class Comp_SF_Stalker : ThingComp, IThingHolder
     {
         innerContainer = new ThingOwner<Thing>(this);
     }
-    /*
-     * Notes for me:
-     * 
-     * the local target info only has coordinates, which matches with a specific method in the class, but strangely, despite being nearly identical to the 
-     * devouer
-     * 
-     * */
+
+
+    #region Swallow
     public void StartSwallow(IntVec3 origin, LocalTargetInfo target)
     {
         if (target.HasThing && target.Thing is Pawn { Spawned: not false } pawn) 
@@ -163,19 +159,7 @@ public class Comp_SF_Stalker : ThingComp, IThingHolder
             Pawn.abilities.GetAbility(SF_AbilityDefOf.SF_SwallowAbility).StartCooldown(5);
         }
     }
-    public void StartDigesting(IntVec3 origin, LocalTargetInfo target)
-    {
-        if (target.HasThing && target.Thing is Pawn pawn)
-        {
-            //DamageInfo dinfo = new DamageInfo(DamageDefOf.AcidBurn,);
-        }
-    }
-    /*
-    public int GetSwallowedTicks()
-    {
 
-    }
-    */
 
     //Swallow is still a direct rip off Devourer, it will currently randomly apply damages based on tick rate. instead it should initiate StartDigestion() and apply either no damage or small amounts of 
     //blunt damage to the pawn whos swallowed
@@ -183,11 +167,11 @@ public class Comp_SF_Stalker : ThingComp, IThingHolder
     {
         if (Swallowed)
         {
-            Pawn pawn = DropPawn(Pawn.MapHeld);
+            Pawn pawn = SwallowedPawn;
+            if (pawn == null) {
+                Debug.LogError("Unable to digest pawn, pawn is NULL");
+            }
             Find.BattleLog.Add(new BattleLogEntry_Event(pawn, RulePackDefOf.Event_DevourerDigestionCompleted, Pawn));
-            DamageInfo dinfo = new DamageInfo(DamageDefOf.AcidBurn, Props.completeDigestionDamage, 0f, -1f, Pawn);
-            dinfo.SetApplyAllDamage(value: true);
-            pawn.TakeDamage(dinfo);
             if (!Props.messageDigestionCompleted.NullOrEmpty() && !pawn.Dead && pawn.Faction == Faction.OfPlayer)
             {
                 Messages.Message(Props.messageDigestionCompleted.Formatted(pawn.Named("PAWN")), pawn, MessageTypeDefOf.NegativeEvent);
@@ -197,6 +181,7 @@ public class Comp_SF_Stalker : ThingComp, IThingHolder
             {
                 Pawn.Drawer.renderer.SetAnimation(null);
             }
+            StartDigesting(pawn);
         }
     }
     private void AbortSwallow(Map map)
@@ -227,26 +212,6 @@ public class Comp_SF_Stalker : ThingComp, IThingHolder
             Pawn.Drawer.renderer.SetAnimation(null);
         }
     }
-    private void EndSwallowedJob()
-    {
-        if (!Pawn.Dead && Pawn.CurJobDef == JobDefOf.DevourerDigest && Pawn.jobs.curDriver != null && !Pawn.jobs.curDriver.ended)
-        {
-            Pawn.jobs.EndCurrentJob(JobCondition.InterruptForced);
-        }
-    }
-    public void DigestJobFinished()
-	{
-		if (1 >= 1)
-		{
-			CompleteSwallow();
-		}
-		else
-		{
-			AbortSwallow(Pawn.MapHeld);
-		}
-	}
-
-
     public void SwallowJobFinished()
     {
         if (ticksDigesting >= ticksToDigestFully)
@@ -258,6 +223,49 @@ public class Comp_SF_Stalker : ThingComp, IThingHolder
             AbortSwallow(Pawn.MapHeld);
         }
     }
+    private void EndSwallowedJob()
+    {
+        if (!Pawn.Dead && Pawn.CurJobDef == JobDefOf.DevourerDigest && Pawn.jobs.curDriver != null && !Pawn.jobs.curDriver.ended)
+        {
+            Pawn.jobs.EndCurrentJob(JobCondition.InterruptForced);
+        }
+    }
+    #endregion
+
+    #region Digestion
+
+    //future reference for job removal. if youre having the bug of repeating swallowing, this is why
+    public void DigestJobFinished()
+	{
+		if (1 >= 1)
+		{
+            CompleteSwallow(); //remember to change this when finished with the method
+		}
+		else
+		{
+			AbortSwallow(Pawn.MapHeld);
+		}
+	}
+    public void StartDigesting(LocalTargetInfo target)
+    {
+        if (target.HasThing && target.Thing is Pawn { Spawned: not false } pawn)
+        {
+            DamageInfo dinfo = new DamageInfo(DamageDefOf.AcidBurn, 99f, 0f, -1f, parent);
+            pawn.GetLord()?.Notify_PawnDamaged(pawn, dinfo);
+            ticksDigesting = 0;
+            ticksToDigestFully = 30;
+            Pawn.jobs.StartJob(JobMaker.MakeJob(SF_DefOF.SF_DefOf.SF_Stalker_digest), JobCondition.InterruptForced);
+            //notification for digestion start
+        }
+        else
+        {
+            Pawn.abilities.GetAbility(AbilityDefOf.ConsumeLeap_Devourer).ResetCooldown();
+        }
+    }
+
+
+    #endregion
+
     private Pawn DropPawn(Map map)
     {
         if (!Swallowed)

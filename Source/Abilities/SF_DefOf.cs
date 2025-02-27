@@ -12,6 +12,7 @@ namespace SF_DefOF
     public static class SF_DefOf
     {
         public static JobDef SF_Stalker_swallow = DefDatabase<JobDef>.GetNamed("SF_Stalker_Swallow");
+        public static JobDef SF_Stalker_digest = DefDatabase<JobDef>.GetNamed("SF_Stalker_Digest");
         public static ThingDef PawnFlyer_SF_Swallow;
 
         //public static JobDef SF_Stalker_swallow = DefDatabase<JobDef>.GetNamed("SF_Stalker_swallow");

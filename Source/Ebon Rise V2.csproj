@@ -13,7 +13,7 @@
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile>
     </TargetFrameworkProfile>
-	<LangVersion>9.0</LangVersion>
+    <LangVersion>9.0</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -56,6 +56,7 @@
     <Compile Include="Abilities\CompProperties_SF_Swallow.cs" />
     <Compile Include="Abilities\CompProp_SF_Stalker.cs" />
     <Compile Include="Abilities\Comp_SF_Stalker.cs" />
+    <Compile Include="Abilities\JobDriver_SF_Digest.cs" />
     <Compile Include="Abilities\JobDriver_SF_Swallow.cs" />
     <Compile Include="Abilities\SF_DefOf.cs" />
     <Compile Include="Abilities\Verb_CastAbility_SF_Swallow.cs" />
