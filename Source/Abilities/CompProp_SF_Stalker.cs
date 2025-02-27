@@ -1,7 +1,7 @@
 ﻿using RimWorld;
 using Verse;
 
-class CompProperties_Swallow : CompProperties
+public class CompProperties_SF_Stalker : CompProperties
 {
     [MustTranslate]
     public string messageSwallowed;
@@ -36,7 +36,7 @@ class CompProperties_Swallow : CompProperties
 
     public CompProperties_SF_Stalker()
     {
-        compClass = typeof(CompSwallow);
+        compClass = typeof(Comp_SF_Stalker);
     }
 
 }
