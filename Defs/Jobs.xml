@@ -1,0 +1,16 @@
+<Defs>
+    <JobDef>
+        <defName>SF_Stalker_Swallow</defName>
+        <driverClass>EbonRiseV2.Jobs.JobDriver_Swallow</driverClass>
+        <checkOverrideOnDamage>Never</checkOverrideOnDamage>
+        <casualInterruptible>false</casualInterruptible>
+        <playerInterruptible>false</playerInterruptible>
+    </JobDef>
+    <JobDef>
+        <defName>SF_Stalker_Digest</defName>
+        <driverClass>EbonRiseV2.Jobs.JobDriver_Digest</driverClass>
+        <checkOverrideOnDamage>Never</checkOverrideOnDamage>
+        <casualInterruptible>false</casualInterruptible>
+        <playerInterruptible>false</playerInterruptible>
+    </JobDef>
+</Defs>

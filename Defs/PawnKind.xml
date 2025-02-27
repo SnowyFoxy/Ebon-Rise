@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Defs>
+	<PawnKindDef>
+		<defName>SF_RiftStalker</defName>
+		<label>Rift Stalker</label>
+		<race>SF_RiftStalker</race>
+		<description>An entity appears as if from the shadows itself. Its four glowing eyes peering into the surroundings as it stalks the area. The creature can appear one moment only to vanish in the next.
+
+			The Cloaked Stalker appears from a shadowy rift before turning invisible, stalking pawns to feed its relentless hunger. However, there is an intelligence behind those eyes. Perhaps you can appease its hunger and gain its favor?</description>
+		<defaultFactionType>Entities</defaultFactionType>
+		<immuneToGameConditionEffects>true</immuneToGameConditionEffects>
+		
+		<combatPower>250</combatPower>
+		<canArriveManhunter>false</canArriveManhunter>
+		<overrideDebugActionCategory>Entity</overrideDebugActionCategory>
+		<lifeStages>
+			<li>
+				<bodyGraphicData>
+					<texPath>Things/Pawn/Xeauvok/TwotailDevourer</texPath>
+					<graphicClass>Graphic_Multi</graphicClass>
+					<drawSize>4.5</drawSize>
+				</bodyGraphicData>
+				<dessicatedBodyGraphicData>
+					<texPath>Things/Pawn/Xeauvok/TwotailDevourer_dessicated</texPath>
+					<graphicClass>Graphic_Multi</graphicClass>
+					<drawSize>25</drawSize>
+					<attachPoints>
+						<li>
+							<offset>(-.4, 0, .85)</offset>
+							<type>PlatformRestraint0</type>
+						</li>
+						<li>
+							<offset>(.45, 0, .85)</offset>
+							<type>PlatformRestraint1</type>
+						</li>
+						<li>
+							<offset>(.5, 0, -.85)</offset>
+							<type>PlatformRestraint2</type>
+						</li>
+						<li>
+							<offset>(-.5, 0, -.85)</offset>
+							<type>PlatformRestraint3</type>
+						</li>
+					</attachPoints>
+				</dessicatedBodyGraphicData>
+			</li>
+		</lifeStages>
+		<abilities>
+			<li>SF_Swallow</li>
+			<!--<li>ConsumeLeap_Devourer</li>-->
+		</abilities>
+	</PawnKindDef>	
+</Defs>

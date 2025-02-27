@@ -1,0 +1,36 @@
+<Defs>
+    <AbilityDef>
+        <defName>SF_Swallow</defName>
+        <label>Swallow leap</label>
+        <description>Swallow a target whole</description>
+        <cooldownTicksRange>3600</cooldownTicksRange>
+        <jobDef>CastJump</jobDef>
+        <ai_IsOffensive>true</ai_IsOffensive>
+        <aiCanUse>true</aiCanUse>
+        <verbProperties>
+            <warmupTime>0.25</warmupTime>
+            <verbClass>EbonRiseV2.Abilities.Ability_Swallow</verbClass>
+            <label>Swallow</label>
+            <range>9.9</range>
+            <soundCast>Pawn_Devourer_Jump</soundCast>
+            <soundLanding>Pawn_Devourer_Land</soundLanding>
+            <requireLineOfSight>true</requireLineOfSight>
+            <targetParams>
+                <canTargetBuildings>false</canTargetBuildings>
+            </targetParams>
+        </verbProperties>
+        <comps>
+            <li Class="EbonRiseV2.Comps.CompAbilityProperties_Swallow">
+                <maxBodySize>2.5</maxBodySize>
+                <texPath>Things/Pawn/Xeauvok/TwotailDevourer</texPath>
+            </li>
+        </comps>
+    </AbilityDef>
+
+    <ThingDef ParentName="PawnFlyerBase">
+        <defName>PawnFlyer_SF_Swallow</defName>
+        <pawnFlyer>
+            <heightFactor>0.5</heightFactor>
+        </pawnFlyer>
+    </ThingDef>
+</Defs>
