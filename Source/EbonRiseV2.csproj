@@ -60,6 +60,7 @@
     <Compile Include="Comps\Comp_Stalker.cs" />
     <Compile Include="Jobs\JobDriver_Digest.cs" />
     <Compile Include="Jobs\JobDriver_Escape.cs" />
+    <Compile Include="Jobs\JobDriver_FeedStalker.cs" />
     <Compile Include="Jobs\JobDriver_Swallow.cs" />
     <Compile Include="Jobs\JobGiver_Digest.cs" />
     <Compile Include="Jobs\JobGiver_Escape.cs" />

@@ -1,89 +1,95 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Defs>
-  
-  <ThinkTreeDef>
-    <defName>SF_RiftStalkerThinkTree</defName>
-    <thinkRoot Class="ThinkNode_Priority">
-      <subNodes>
-        <!-- Despawned -->
-        <li Class="ThinkNode_Subtree">
-          <treeDef>Despawned</treeDef>
-        </li>
-        
-        <!-- Downed -->
-        <li Class="ThinkNode_Subtree">
-          <treeDef>Downed</treeDef>
-        </li>
-        
-        <!-- Lord directives -->
-        <li Class="ThinkNode_Subtree">
-          <treeDef>LordDuty</treeDef>
-        </li>
-        
-        <!-- Escaping-->
-        <li Class="ThinkNodeConditional_EscapingHoldingPlatform">
-          <subNodes>
-            <li Class="JobGiver_EscapingHoldingPlatform" />
-          </subNodes>
-        </li>
-        
-        <!-- Insertion hook for modders -->
-        <li Class="ThinkNode_SubtreesByTag">
-          <insertTag>Devourer_PreMain</insertTag>
-        </li>
+    <ThinkTreeDef>
+        <defName>SF_RiftStalkerThinkTree</defName>
+        <thinkRoot Class="ThinkNode_Priority">
+            <subNodes>
+                <!-- Despawned -->
+                <li Class="ThinkNode_Subtree">
+                    <treeDef>Despawned</treeDef>
+                </li>
 
-        <!-- Consume leap a target -->
-        <li Class="JobGiver_AIAbilityFight">
-          <targetAcquireRadius>65</targetAcquireRadius>
-          <targetKeepRadius>72</targetKeepRadius>
-          <ability>SF_Swallow</ability>
-        </li>
+                <!-- Downed -->
+                <li Class="ThinkNode_Subtree">
+                    <treeDef>Downed</treeDef>
+                </li>
 
-        <!-- React to close melee threat -->
-        <li Class="JobGiver_ReactToCloseMeleeThreat">
-          <maxDistance>2.9</maxDistance>
-        </li>
+                <!-- Escaping-->
+                <li Class="ThinkNodeConditional_EscapingHoldingPlatform">
+                    <subNodes>
+                        <li Class="JobGiver_EscapingHoldingPlatform"/>
+                    </subNodes>
+                </li>
 
-        <!-- Regular fight -->
-        <li Class="JobGiver_AIFightEnemies">
-          <targetAcquireRadius>65</targetAcquireRadius>
-          <targetKeepRadius>72</targetKeepRadius>
-          <allowTurrets>true</allowTurrets>
-        </li>
-        
-        <!-- Insertion hook for modders -->
-        <li Class="ThinkNode_SubtreesByTag">
-          <insertTag>Devourer_PreWander</insertTag>
-        </li>
-        
-        <!-- Wander -->
-        <li Class="JobGiver_WanderAnywhere">
-          <maxDanger>Deadly</maxDanger>
-          <ticksBetweenWandersRange>120~240</ticksBetweenWandersRange>
-        </li>
-      </subNodes>
-    </thinkRoot>
-  </ThinkTreeDef>
-  
-  <ThinkTreeDef>
-    <defName>DevourerConstant</defName>
-    <thinkRoot Class="ThinkNode_Priority">
-      <subNodes>
-        <!-- Despawned -->
-        <li Class="ThinkNode_Subtree">
-          <treeDef>Despawned</treeDef>
-        </li>
-        
-        <li Class="ThinkNode_ConditionalCanDoLordJobNow">
-          <subNodes>
-            <!-- Lord directives -->
-            <li Class="ThinkNode_Subtree">
-              <treeDef>LordDutyConstant</treeDef>
-            </li>
-          </subNodes>
-        </li>
-      </subNodes>
-    </thinkRoot>
-  </ThinkTreeDef>
-  
+                <!-- Insertion hook for modders -->
+                <li Class="ThinkNode_SubtreesByTag">
+                    <insertTag>Devourer_PreMain</insertTag>
+                </li>
+
+                <!-- Stalking for food -->
+                <li Class="EbonRiseV2.Think.ThinkNode_ConditionalStalkerState">
+                    <state>Stalking</state>
+                    <subNodes>
+                        <!-- Consume leap a target -->
+                        <li Class="JobGiver_AIAbilityFight">
+                            <targetAcquireRadius>65</targetAcquireRadius>
+                            <targetKeepRadius>72</targetKeepRadius>
+                            <ability>SF_Swallow</ability>
+                        </li>
+                    </subNodes>
+                </li>
+
+                <!-- Escaping -->
+                <li Class="EbonRiseV2.Think.ThinkNode_ConditionalStalkerState">
+                    <state>Escaping</state>
+                    <!-- Run away -->
+                    <subNodes>
+                        <li Class="EbonRiseV2.Jobs.JobGiver_Escape"/>
+                    </subNodes>
+                </li>
+
+                <!-- Digesting food -->
+                <li Class="EbonRiseV2.Think.ThinkNode_ConditionalStalkerState">
+                    <state>Digesting</state>
+                    <!-- Sleep -->
+                    <subNodes>
+                        <li Class="EbonRiseV2.Jobs.JobGiver_Digest"/>
+                    </subNodes>
+                </li>
+
+                <!-- Insertion hook for modders -->
+                <li Class="ThinkNode_SubtreesByTag">
+                    <insertTag>Devourer_PreWander</insertTag>
+                </li>
+
+                <!-- Wander -->
+                <li Class="JobGiver_WanderAnywhere">
+                    <maxDanger>Deadly</maxDanger>
+                    <ticksBetweenWandersRange>120~240</ticksBetweenWandersRange>
+                </li>
+            </subNodes>
+        </thinkRoot>
+    </ThinkTreeDef>
+
+    <ThinkTreeDef>
+        <defName>DevourerConstant</defName>
+        <thinkRoot Class="ThinkNode_Priority">
+            <subNodes>
+                <!-- Despawned -->
+                <li Class="ThinkNode_Subtree">
+                    <treeDef>Despawned</treeDef>
+                </li>
+
+                <li Class="ThinkNode_ConditionalCanDoLordJobNow">
+                    <subNodes>
+                        <!-- Lord directives -->
+                        <li Class="ThinkNode_Subtree">
+                            <treeDef>LordDutyConstant</treeDef>
+                        </li>
+                    </subNodes>
+                </li>
+            </subNodes>
+        </thinkRoot>
+    </ThinkTreeDef>
+
 </Defs>

@@ -1,8 +1,9 @@
-﻿using Verse;
+﻿using RimWorld;
+using Verse;
 
 namespace EbonRiseV2.Comps
 {
-    public class CompProperties_SF_Stalker : CompProperties
+    public class CompProperties_SF_Stalker : CompProperties_Interactable
     {
         [MustTranslate] public string messageSwallowed;
         [MustTranslate] public string messageDigested;

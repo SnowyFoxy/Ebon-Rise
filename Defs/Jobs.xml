@@ -7,10 +7,18 @@
         <playerInterruptible>false</playerInterruptible>
     </JobDef>
     <JobDef>
+        <defName>SF_Stalker_Escape</defName>
+        <driverClass>EbonRiseV2.Jobs.JobDriver_Escape</driverClass>
+        <reportString>escaping</reportString>
+    </JobDef>
+    <JobDef>
         <defName>SF_Stalker_Digest</defName>
         <driverClass>EbonRiseV2.Jobs.JobDriver_Digest</driverClass>
-        <checkOverrideOnDamage>Never</checkOverrideOnDamage>
-        <casualInterruptible>false</casualInterruptible>
-        <playerInterruptible>false</playerInterruptible>
+        <reportString>digesting</reportString>
+    </JobDef>
+    <JobDef>
+        <defName>SF_Stalker_FeedStalker</defName>
+        <driverClass>EbonRiseV2.Jobs.JobDriver_FeedStalker</driverClass>
+        <reportString>feeding</reportString>
     </JobDef>
 </Defs>

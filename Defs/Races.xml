@@ -39,7 +39,8 @@
 		<specificMeatDef>Meat_Twisted</specificMeatDef>
 		<leatherDef>Leather_Dread</leatherDef>
 		<hasGenders>false</hasGenders>
-		<foodType>None</foodType>
+		<!-- Todo patch it so the food need is added despite being None for foodType -->
+		<foodType>Liquor</foodType>
 		<lifeExpectancy>200</lifeExpectancy>
 
 		<soundMeleeHitPawn>Pawn_Melee_SmallScratch_HitPawn</soundMeleeHitPawn>
@@ -76,12 +77,27 @@
 					<li>(3.5, 60)</li>
 				</points>
 			</bodySizeDigestTimeCurve>
-			<timeDamageCurve>
-				<points>
-					<li>(0, 10)</li>
-					<li>(60, 40)</li>
-				</points>
-			</timeDamageCurve>
+			<cooldownTicks>1</cooldownTicks>
+			<activeTicks>1</activeTicks>
+			<ticksToActivate>1</ticksToActivate>
+			<jobString>feed pawn to rift stalker</jobString>
+			<activateLabelString>Feed the rift stalker</activateLabelString>
+			<activateDescString>Feed the rift stalker with one of your colonists or prisoners. This will temporarily turn it docile, and it will join your colony.</activateDescString>
+			<activateTexPath>UI/Commands/SendNociosphere</activateTexPath>
+			<activatingString>{0} is feeding {1} to a rift stalker</activatingString>
+			<targetingParameters>
+				<canTargetBuildings>false</canTargetBuildings>
+				<canTargetAnimals>false</canTargetAnimals>
+				<canTargetMechs>false</canTargetMechs>
+				<onlyTargetControlledPawns>true</onlyTargetControlledPawns>
+			</targetingParameters>
+		</li>
+		<li Class="CompProperties_Studiable">
+			<frequencyTicks>120000</frequencyTicks>
+			<knowledgeCategory>Advanced</knowledgeCategory>
+			<anomalyKnowledge>4</anomalyKnowledge>
+			<minMonolithLevelForStudy>1</minMonolithLevelForStudy>
+			<requiresHoldingPlatform>true</requiresHoldingPlatform>
 		</li>
 		<li Class="CompProperties_HoldingPlatformTarget">
 			<baseEscapeIntervalMtbDays>60</baseEscapeIntervalMtbDays>

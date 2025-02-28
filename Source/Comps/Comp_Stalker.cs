@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using EbonRiseV2.Jobs;
 using EbonRiseV2.Util;
 using RimWorld;
@@ -9,9 +10,9 @@ using AbilityDefOf = EbonRiseV2.Abilities.AbilityDefOf;
 
 namespace EbonRiseV2.Comps
 {
-    public class Comp_Stalker : ThingComp, IThingHolder
+    public class Comp_Stalker : CompInteractable, IThingHolder
     {
-        private static int DigestTickInterval = 100;
+        private static int DigestTickInterval = 1000;
         
         public StalkerState stalkerState;
         
@@ -22,7 +23,7 @@ namespace EbonRiseV2.Comps
         public bool Swallowed => SwallowedThing != null;
         public Pawn Pawn => parent as Pawn;
 
-        public CompProperties_SF_Stalker Props => (CompProperties_SF_Stalker)props;
+        public CompProperties_SF_Stalker StalkerProps => (CompProperties_SF_Stalker)props;
 
         public Thing SwallowedThing =>
             innerContainer.InnerListForReading.Count <= 0 ? null : innerContainer.InnerListForReading[0];
@@ -55,7 +56,7 @@ namespace EbonRiseV2.Comps
         
         public int GetDigestionTicks()
         {
-            return SwallowedThing == null ? 0 : Mathf.CeilToInt(Props.bodySizeDigestTimeCurve.Evaluate(SwallowedPawn.BodySize) * 60f);
+            return SwallowedThing == null ? 0 : Mathf.CeilToInt(StalkerProps.bodySizeDigestTimeCurve.Evaluate(SwallowedPawn.BodySize) * 60f);
         }
         
         public void GetChildHolders(List<IThingHolder> outChildren)
@@ -81,16 +82,28 @@ namespace EbonRiseV2.Comps
             Find.BattleLog.Add(new BattleLogEntry_Event(SwallowedPawn, RulePackDefOf.Event_DevourerDigestionAborted, Pawn));
             if (Find.TickManager.TicksGame % DigestTickInterval == 0)
             {
-                DamageInfo dinfo = new DamageInfo(DamageDefOf.AcidBurn, 1f, 0f, -1f, Pawn);
+                Log.Message("1: " + Pawn);
+                DamageInfo dinfo = new DamageInfo(DamageDefOf.AcidBurn, 1f, 0f, -1f, Pawn, spawnFilth: false);
                 dinfo.SetApplyAllDamage(value: true);
                 SwallowedPawn.TakeDamage(dinfo);
+                Log.Message("For " + Pawn.needs.food);
+                Pawn.needs.food.CurLevel += 1f;
+                Log.Message("2");
             }
 
             if (!SwallowedPawn.Dead) return;
             AbortSwallow();
         }
 
-
+        protected override void OnInteracted(Pawn caster)
+        {
+            FloatMenuUtility.MakeMenu(caster.Map.mapPawns.FreeColonistsAndPrisonersSpawned.Where(other => other != caster), pawn => pawn.Name.ToStringFull,
+                chosen =>
+                {
+                    return () => caster.jobs.StartJob(JobMaker.MakeJob(JobsDefOf.SF_Stalker_FeedStalker, chosen, Pawn), JobCondition.InterruptForced);
+                });
+        }
+        
         #region Swallow
 
         public void StartSwallow(LocalTargetInfo target)
@@ -108,9 +121,9 @@ namespace EbonRiseV2.Comps
             // Attempts to start the job for the devouring, currently, the job will immediately end after ~10 seconds and follow normal devourer procedures. WIP.
             Pawn.jobs.StartJob(JobMaker.MakeJob(JobsDefOf.SF_Stalker_Swallow), JobCondition.InterruptForced);
             
-            if (!Props.messageSwallowed.NullOrEmpty() && pawn.Faction == Faction.OfPlayer)
+            if (!StalkerProps.messageSwallowed.NullOrEmpty() && pawn.Faction == Faction.OfPlayer)
             {
-                Messages.Message(Props.messageSwallowed.Formatted(pawn.Named("PAWN")), Pawn,
+                Messages.Message(StalkerProps.messageSwallowed.Formatted(pawn.Named("PAWN")), Pawn,
                     MessageTypeDefOf.NegativeEvent);
             }
 
@@ -131,9 +144,9 @@ namespace EbonRiseV2.Comps
 
             Find.BattleLog.Add(new BattleLogEntry_Event(pawn, RulePackDefOf.Event_DevourerDigestionCompleted,
                 Pawn));
-            if (!Props.messageDigestionCompleted.NullOrEmpty() && !pawn.Dead && pawn.Faction == Faction.OfPlayer)
+            if (!StalkerProps.messageDigestionCompleted.NullOrEmpty() && !pawn.Dead && pawn.Faction == Faction.OfPlayer)
             {
-                Messages.Message(Props.messageDigestionCompleted.Formatted(pawn.Named("PAWN")), pawn,
+                Messages.Message(StalkerProps.messageDigestionCompleted.Formatted(pawn.Named("PAWN")), pawn,
                     MessageTypeDefOf.NegativeEvent);
             }
 
@@ -157,7 +170,7 @@ namespace EbonRiseV2.Comps
             Pawn pawn = DropPawn();
             if (pawn.Faction == Faction.OfPlayer)
             {
-                string str = Pawn.Dead ? Props.messageEmergedCorpse : Props.messageEmerged;
+                string str = Pawn.Dead ? StalkerProps.messageEmergedCorpse : StalkerProps.messageEmerged;
                 if (!str.NullOrEmpty())
                 {
                     str = str.Formatted(pawn.Named("PAWN"));
