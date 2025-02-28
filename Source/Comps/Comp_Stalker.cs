@@ -1,25 +1,22 @@
 ﻿using System.Collections.Generic;
 using EbonRiseV2.Jobs;
+using EbonRiseV2.Util;
 using RimWorld;
 using UnityEngine;
 using Verse;
 using Verse.AI;
-using Verse.AI.Group;
 using AbilityDefOf = EbonRiseV2.Abilities.AbilityDefOf;
 
 namespace EbonRiseV2.Comps
 {
     public class Comp_Stalker : ThingComp, IThingHolder
     {
+        private static int DigestTickInterval = 100;
+        
+        public StalkerState stalkerState;
+        
         private ThingOwner<Thing> innerContainer;
-
-        private int ticksDigesting;
-        private int ticksToSwallowed;
-
         private int ticksToDigestFully;
-
-        private int ticksToSwallowFully;
-
         private bool wasDrafted;
 
         public bool Swallowed => SwallowedThing != null;
@@ -43,6 +40,24 @@ namespace EbonRiseV2.Comps
             }
         }
 
+        private HediffComp_Invisibility invisibility;
+        public HediffComp_Invisibility Invisibility
+        {
+            get
+            {
+                if (invisibility != null)
+                    return invisibility;
+                Hediff firstHediffOfDef = Pawn.health.hediffSet.GetFirstHediffOfDef(HediffDefOf.HoraxianInvisibility) ??
+                                          Pawn.health.AddHediff(HediffDefOf.HoraxianInvisibility);
+                return invisibility = firstHediffOfDef?.TryGetComp<HediffComp_Invisibility>();
+            }
+        }
+        
+        public int GetDigestionTicks()
+        {
+            return SwallowedThing == null ? 0 : Mathf.CeilToInt(Props.bodySizeDigestTimeCurve.Evaluate(SwallowedPawn.BodySize) * 60f);
+        }
+        
         public void GetChildHolders(List<IThingHolder> outChildren)
         {
             ThingOwnerUtility.AppendThingHoldersFromThings(outChildren, GetDirectlyHeldThings());
@@ -58,10 +73,27 @@ namespace EbonRiseV2.Comps
             innerContainer = new ThingOwner<Thing>(this);
         }
 
+        public override void CompTick()
+        {
+            innerContainer.ThingOwnerTick(false);
+
+            if (!Swallowed) return;
+            Find.BattleLog.Add(new BattleLogEntry_Event(SwallowedPawn, RulePackDefOf.Event_DevourerDigestionAborted, Pawn));
+            if (Find.TickManager.TicksGame % DigestTickInterval == 0)
+            {
+                DamageInfo dinfo = new DamageInfo(DamageDefOf.AcidBurn, 1f, 0f, -1f, Pawn);
+                dinfo.SetApplyAllDamage(value: true);
+                SwallowedPawn.TakeDamage(dinfo);
+            }
+
+            if (!SwallowedPawn.Dead) return;
+            AbortSwallow();
+        }
+
 
         #region Swallow
 
-        public void StartSwallow(IntVec3 origin, LocalTargetInfo target)
+        public void StartSwallow(LocalTargetInfo target)
         {
             if (target is not { HasThing: true, Thing: Pawn { Spawned: not false } pawn })
             {
@@ -84,28 +116,9 @@ namespace EbonRiseV2.Comps
 
             Pawn.Drawer.renderer.SetAllGraphicsDirty();
             Find.BattleLog.Add(new BattleLogEntry_Event(pawn, RulePackDefOf.Event_DevourerConsumeLeap, Pawn));
-
-            //Attempted to handle image processing, TBD how to properly handle this, perhaps anim def? 
-            /*
-            Graphic graphic = GraphicDatabase.Get<Graphic_Multi>( Props + "_middle_");
-            Log.Message("UpdatedGraphics");
-            if (ContentFinder<Texture2D>.Get(Props + "_middle_"))
-            {
-                if (graphic == null)
-                {
-                    Log.Warning("Unable to find graphic..." + Props + "_middle_");
-                }
-                else
-                {
-                    pawn.Drawer.renderer.SetAllGraphicsDirty();
-                }
-            } */
         }
 
-
-        //Swallow is still a direct rip off Devourer, it will currently randomly apply damages based on tick rate. instead it should initiate StartDigestion() and apply either no damage or small amounts of 
-        //blunt damage to the pawn whos swallowed
-        private void CompleteSwallow()
+        public void CompleteSwallow()
         {
             if (!Swallowed) return;
             
@@ -124,28 +137,24 @@ namespace EbonRiseV2.Comps
                     MessageTypeDefOf.NegativeEvent);
             }
 
-            Pawn.Drawer.renderer.SetAllGraphicsDirty();
-            if (Pawn.Drawer.renderer.CurAnimation == AnimationDefOf.DevourerDigesting)
+            // Failed to swallow
+            if (pawn.Spawned)
             {
-                Pawn.Drawer.renderer.SetAnimation(null);
+                Pawn.abilities.GetAbility(AbilityDefOf.SF_Swallow).ResetCooldown();
+                return;
             }
-
-            StartDigesting(pawn);
+            
+            stalkerState = StalkerState.Escaping;
         }
 
-        private void AbortSwallow(Map map)
+        private void AbortSwallow()
         {
             if (!Swallowed)
             {
                 return;
             }
 
-            Pawn pawn = DropPawn(map);
-            Find.BattleLog.Add(new BattleLogEntry_Event(pawn, RulePackDefOf.Event_DevourerDigestionAborted, Pawn));
-            float amount = Props.timeDamageCurve.Evaluate(ticksDigesting / 60f);
-            DamageInfo dinfo = new DamageInfo(DamageDefOf.AcidBurn, amount, 0f, -1f, Pawn);
-            dinfo.SetApplyAllDamage(value: true);
-            pawn.TakeDamage(dinfo);
+            Pawn pawn = DropPawn();
             if (pawn.Faction == Faction.OfPlayer)
             {
                 string str = Pawn.Dead ? Props.messageEmergedCorpse : Props.messageEmerged;
@@ -164,22 +173,9 @@ namespace EbonRiseV2.Comps
             }
         }
 
-        public void SwallowJobFinished()
-        {
-            if (ticksDigesting >= ticksToDigestFully)
-            {
-                CompleteSwallow();
-            }
-            else
-            {
-                AbortSwallow(Pawn.MapHeld);
-            }
-        }
-
         private void EndSwallowedJob()
         {
-            if (!Pawn.Dead && Pawn.CurJobDef == JobDefOf.DevourerDigest && Pawn.jobs.curDriver != null &&
-                !Pawn.jobs.curDriver.ended)
+            if (!Pawn.Dead && Pawn.CurJobDef == JobDefOf.DevourerDigest && Pawn.jobs.curDriver is { ended: false })
             {
                 Pawn.jobs.EndCurrentJob(JobCondition.InterruptForced);
             }
@@ -187,46 +183,14 @@ namespace EbonRiseV2.Comps
 
         #endregion
 
-        #region Digestion
-
-        //future reference for job removal. if youre having the bug of repeating swallowing, this is why
-        public void DigestJobFinished()
-        {
-            if (1 >= 1)
-            {
-                CompleteSwallow(); //remember to change this when finished with the method
-            }
-            else
-            {
-                AbortSwallow(Pawn.MapHeld);
-            }
-        }
-
-        private void StartDigesting(LocalTargetInfo target)
-        {
-            if (target is not { HasThing: true, Thing: Pawn { Spawned: false } pawn })
-            {
-                Pawn.abilities.GetAbility(AbilityDefOf.SF_Swallow).ResetCooldown();
-                return;
-            }
-            
-            DamageInfo dinfo = new DamageInfo(DamageDefOf.AcidBurn, 99f, 0f, -1f, parent);
-            pawn.GetLord()?.Notify_PawnDamaged(pawn, dinfo);
-            ticksDigesting = 0;
-            ticksToDigestFully = 30;
-            Pawn.jobs.StartJob(JobMaker.MakeJob(JobsDefOf.SF_Stalker_Digest), JobCondition.InterruptForced);
-            //notification for digestion start
-        }
-
-        #endregion
-
-        private Pawn DropPawn(Map map)
+        private Pawn DropPawn()
         {
             if (!Swallowed)
             {
                 return null;
             }
 
+            var map = Pawn.Map;
             if (!innerContainer.TryDrop(SwallowedThing, Pawn.PositionHeld, map, ThingPlaceMode.Near,
                     out var lastResultingThing))
             {
@@ -258,7 +222,7 @@ namespace EbonRiseV2.Comps
         public override void PostExposeData()
         {
             base.PostExposeData();
-            Scribe_Values.Look(ref ticksDigesting, "ticksDigesting");
+            Scribe_Values.Look(ref stalkerState, "stalkerState");
             Scribe_Values.Look(ref ticksToDigestFully, "ticksToDigestFully");
             Scribe_Values.Look(ref wasDrafted, "wasDrafted", defaultValue: false);
             Scribe_Deep.Look(ref innerContainer, "innerContainer", this);

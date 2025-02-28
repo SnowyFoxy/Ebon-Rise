@@ -23,12 +23,6 @@ namespace EbonRiseV2.Comps
             new CurvePoint(3.5f, 90f)
         };
 
-        public SimpleCurve timeDamageCurve = new()
-        {
-            new CurvePoint(0f, 5f),
-            new CurvePoint(60f, 35f)
-        };
-
         public CompProperties_SF_Stalker()
         {
             compClass = typeof(Comp_Stalker);

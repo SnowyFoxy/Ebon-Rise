@@ -13,7 +13,7 @@ namespace EbonRiseV2.Comps
             Log.Message("OnJumpCompleted called, origin: " + origin + "LocalTargetInfo: " + target.Label + target.Cell);
             if (parent.pawn.TryGetComp<Comp_Stalker>(out var comp))
             {
-                comp.StartSwallow(origin, target);
+                comp.StartSwallow(target);
             }
         }
 

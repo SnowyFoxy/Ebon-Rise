@@ -25,7 +25,7 @@ namespace EbonRiseV2.Jobs
             Toil toil = Toils_General.Wait(100).WithProgressBarToilDelay(TargetIndex.None, 100);
             toil.FailOn(() => !Comp.Swallowed);
             toil.PlaySustainerOrSound(SoundDefOf.Pawn_Devourer_Digesting);
-            toil.AddFinishAction(Comp.SwallowJobFinished);
+            toil.AddFinishAction(Comp.CompleteSwallow);
             yield return toil;
         }
     }
