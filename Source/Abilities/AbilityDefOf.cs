@@ -3,7 +3,7 @@ using Verse;
 
 namespace EbonRiseV2.Abilities
 {
-    [RimWorld.DefOf]
+    [DefOf]
     public static class AbilityDefOf
     {
         public static AbilityDef SF_Swallow;

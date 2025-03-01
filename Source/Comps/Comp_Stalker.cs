@@ -76,19 +76,17 @@ namespace EbonRiseV2.Comps
 
         public override void CompTick()
         {
+            base.CompTick();
             innerContainer.ThingOwnerTick(false);
 
             if (!Swallowed) return;
             Find.BattleLog.Add(new BattleLogEntry_Event(SwallowedPawn, RulePackDefOf.Event_DevourerDigestionAborted, Pawn));
             if (Find.TickManager.TicksGame % DigestTickInterval == 0)
             {
-                Log.Message("1: " + Pawn);
                 DamageInfo dinfo = new DamageInfo(DamageDefOf.AcidBurn, 1f, 0f, -1f, Pawn, spawnFilth: false);
                 dinfo.SetApplyAllDamage(value: true);
                 SwallowedPawn.TakeDamage(dinfo);
-                Log.Message("For " + Pawn.needs.food);
                 Pawn.needs.food.CurLevel += 1f;
-                Log.Message("2");
             }
 
             if (!SwallowedPawn.Dead) return;
@@ -108,7 +106,7 @@ namespace EbonRiseV2.Comps
 
         public void StartSwallow(LocalTargetInfo target)
         {
-            if (target is not { HasThing: true, Thing: Pawn { Spawned: not false } pawn })
+            if (target is not { HasThing: true, Thing: Pawn { Spawned: true } pawn })
             {
                 // Have to initiate a cancellation method, if error occurs RiftStalker will try to repeatedly eat, this can cause a softlock in the game, even if RS is destroyed.
                 Pawn.abilities.GetAbility(AbilityDefOf.SF_Swallow).StartCooldown(5);
@@ -126,7 +124,8 @@ namespace EbonRiseV2.Comps
                 Messages.Message(StalkerProps.messageSwallowed.Formatted(pawn.Named("PAWN")), Pawn,
                     MessageTypeDefOf.NegativeEvent);
             }
-
+            
+            stalkerState = StalkerState.Swallowing;
             Pawn.Drawer.renderer.SetAllGraphicsDirty();
             Find.BattleLog.Add(new BattleLogEntry_Event(pawn, RulePackDefOf.Event_DevourerConsumeLeap, Pawn));
         }
@@ -144,11 +143,6 @@ namespace EbonRiseV2.Comps
 
             Find.BattleLog.Add(new BattleLogEntry_Event(pawn, RulePackDefOf.Event_DevourerDigestionCompleted,
                 Pawn));
-            if (!StalkerProps.messageDigestionCompleted.NullOrEmpty() && !pawn.Dead && pawn.Faction == Faction.OfPlayer)
-            {
-                Messages.Message(StalkerProps.messageDigestionCompleted.Formatted(pawn.Named("PAWN")), pawn,
-                    MessageTypeDefOf.NegativeEvent);
-            }
 
             // Failed to swallow
             if (pawn.Spawned)
@@ -158,6 +152,7 @@ namespace EbonRiseV2.Comps
             }
             
             stalkerState = StalkerState.Escaping;
+            Pawn.Drawer.renderer.SetAllGraphicsDirty();
         }
 
         private void AbortSwallow()
@@ -178,20 +173,7 @@ namespace EbonRiseV2.Comps
                 }
             }
 
-            EndSwallowedJob();
             Pawn.Drawer.renderer.SetAllGraphicsDirty();
-            if (Pawn.Drawer.renderer.CurAnimation == AnimationDefOf.DevourerDigesting)
-            {
-                Pawn.Drawer.renderer.SetAnimation(null);
-            }
-        }
-
-        private void EndSwallowedJob()
-        {
-            if (!Pawn.Dead && Pawn.CurJobDef == JobDefOf.DevourerDigest && Pawn.jobs.curDriver is { ended: false })
-            {
-                Pawn.jobs.EndCurrentJob(JobCondition.InterruptForced);
-            }
         }
 
         #endregion

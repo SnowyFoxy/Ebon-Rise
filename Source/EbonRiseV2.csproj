@@ -65,6 +65,7 @@
     <Compile Include="Jobs\JobGiver_Digest.cs" />
     <Compile Include="Jobs\JobGiver_Escape.cs" />
     <Compile Include="Jobs\JobsDefOf.cs" />
+    <Compile Include="Renderer\PawnRenderNode_Swallowing.cs" />
     <Compile Include="Think\ThinkNode_ConditionalStalkerState.cs" />
     <Compile Include="Util\StalkerState.cs" />
   </ItemGroup>

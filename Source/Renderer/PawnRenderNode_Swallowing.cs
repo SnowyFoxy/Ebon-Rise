@@ -1,0 +1,34 @@
+using EbonRiseV2.Comps;
+using EbonRiseV2.Util;
+using UnityEngine;
+using Verse;
+
+namespace EbonRiseV2.Renderer
+{
+    public class PawnRenderNode_Swallowing : PawnRenderNode_AnimalPart
+    {
+        public PawnRenderNode_Swallowing(Pawn pawn, PawnRenderNodeProperties props, PawnRenderTree tree) : base(pawn, props, tree)
+        {
+            
+        }
+        
+        public override Graphic GraphicFor(Pawn pawn)
+        {
+            var comp = pawn?.GetComp<Comp_Stalker>();
+
+            if (comp == null || children == null) return null;
+            
+            Graphic graphic = pawn.ageTracker.CurKindLifeStage.bodyGraphicData.Graphic;
+            
+            if (comp.stalkerState == StalkerState.Swallowing)
+            {
+                Log.Message("Swallowing! " + GraphicDatabase.Get<Graphic_Multi>(graphic.path + "_middle", graphic.Shader, graphic.drawSize, Color.white));
+                return GraphicDatabase.Get<Graphic_Multi>(graphic.path + "_middle", graphic.Shader, graphic.drawSize, Color.white);
+            }
+            
+            Log.Message("Swallowed? " + comp.Swallowed + " for ");
+            return comp.Swallowed ? GraphicDatabase.Get<Graphic_Multi>(graphic.path + "_Closed", graphic.Shader, graphic.drawSize, Color.white) : 
+                base.GraphicFor(pawn);
+        }
+    }
+}
