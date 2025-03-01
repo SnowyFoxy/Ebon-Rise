@@ -8,9 +8,8 @@ namespace EbonRiseV2.Comps
     {
         private new CompAbilityProperties_Swallow Props => (CompAbilityProperties_Swallow)props;
 
-        public void OnJumpCompleted(IntVec3 origin, LocalTargetInfo target) //AHHHHHHHH WHY IS THIS A LOCATION!?
+        public void OnJumpCompleted(IntVec3 origin, LocalTargetInfo target)
         {
-            Log.Message("OnJumpCompleted called, origin: " + origin + "LocalTargetInfo: " + target.Label + target.Cell);
             if (parent.pawn.TryGetComp<Comp_Stalker>(out var comp))
             {
                 comp.StartSwallow(target);

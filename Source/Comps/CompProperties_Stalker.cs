@@ -3,7 +3,7 @@ using Verse;
 
 namespace EbonRiseV2.Comps
 {
-    public class CompProperties_SF_Stalker : CompProperties_Interactable
+    public class CompProperties_Stalker : CompProperties_Interactable
     {
         [MustTranslate] public string messageSwallowed;
         [MustTranslate] public string messageDigested;
@@ -24,7 +24,7 @@ namespace EbonRiseV2.Comps
             new CurvePoint(3.5f, 90f)
         };
 
-        public CompProperties_SF_Stalker()
+        public CompProperties_Stalker()
         {
             compClass = typeof(Comp_Stalker);
         }

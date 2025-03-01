@@ -1,0 +1,32 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+    <HediffDef>
+        <defName>SF_AcidResist</defName>
+        <label>acid resistance</label>
+        <description>Protection from stomach acids.</description>
+        <initialSeverity>1</initialSeverity>
+        <maxSeverity>1</maxSeverity>
+        <isBad>false</isBad>
+    </HediffDef>
+    <HediffDef ParentName="InjuryBase">
+        <defName>SF_DigestiveAcid</defName>
+        <label>digestive acid burn</label>
+        <labelNoun>a digestive acid burn</labelNoun>
+        <description>An acid burn caused by active digestive acids.</description>
+        <comps>
+            <li Class="HediffCompProperties_TendDuration">
+                <labelTendedWell>bandaged</labelTendedWell>
+                <labelTendedWellInner>tended</labelTendedWellInner>
+                <labelSolidTendedWell>tended</labelSolidTendedWell>
+            </li>
+        </comps>
+        <injuryProps>
+            <bleedRate>0.0</bleedRate>
+            <destroyedLabel>Digested</destroyedLabel>
+            <destroyedOutLabel>Digested</destroyedOutLabel>
+            <painPerSeverity>0.01875</painPerSeverity>
+            <averagePainPerSeverityPermanent>0.00625</averagePainPerSeverityPermanent>
+            <canMerge>true</canMerge>
+        </injuryProps>
+    </HediffDef>
+</Defs>

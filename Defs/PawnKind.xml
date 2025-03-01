@@ -47,7 +47,6 @@
 		</lifeStages>
 		<abilities>
 			<li>SF_Swallow</li>
-			<!--<li>ConsumeLeap_Devourer</li>-->
 		</abilities>
 	</PawnKindDef>	
 </Defs>

@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using EbonRiseV2.Comps;
+using EbonRiseV2.Util;
 using RimWorld;
 using Verse;
 using Verse.AI;
@@ -50,6 +51,7 @@ namespace EbonRiseV2.Jobs
                     pawn.carryTracker.TryDropCarriedThing(pawn.Position, ThingPlaceMode.Near, out _);
                 }
 
+                Feeding.SetFaction(Faction.OfPlayer);
                 // TODO fix the error that occurs here
                 comp.StartSwallow(Takee);
             };

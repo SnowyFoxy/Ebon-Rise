@@ -1,96 +1,30 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
-  <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{5F1D8C6D-E127-4001-A575-E56D99DF271F}</ProjectGuid>
-    <OutputType>Library</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>EbonRiseV2</RootNamespace>
-    <AssemblyName>Ebon_Rise_V2</AssemblyName>
-    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
-    <FileAlignment>512</FileAlignment>
-    <TargetFrameworkProfile>
-    </TargetFrameworkProfile>
-    <LangVersion>9.0</LangVersion>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>..\Assemblies\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <Prefer32Bit>false</Prefer32Bit>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
-    <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <Prefer32Bit>false</Prefer32Bit>
-  </PropertyGroup>
-  <PropertyGroup>
-    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
-  </PropertyGroup>
-  <ItemGroup>
-    <Reference Include="Assembly-CSharp">
-      <HintPath>..\..\..\RimWorldWin64_Data\Managed\Assembly-CSharp.dll</HintPath>
-    </Reference>
-    <Reference Include="System" />
-    <Reference Include="System.Core" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Xml" />
-    <Reference Include="UnityEngine.CoreModule">
-      <HintPath>..\..\..\RimWorldWin64_Data\Managed\UnityEngine.CoreModule.dll</HintPath>
-    </Reference>
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="Abilities\Ability_Swallow.cs" />
-    <Compile Include="Abilities\AbilityDefOf.cs" />
-    <Compile Include="Comps\CompAbility_Swallow.cs" />
-    <Compile Include="Comps\CompAbilityProperties_Swallow.cs" />
-    <Compile Include="Comps\CompProperties_Stalker.cs" />
-    <Compile Include="Comps\Comp_Stalker.cs" />
-    <Compile Include="Jobs\JobDriver_Digest.cs" />
-    <Compile Include="Jobs\JobDriver_Escape.cs" />
-    <Compile Include="Jobs\JobDriver_FeedStalker.cs" />
-    <Compile Include="Jobs\JobDriver_Swallow.cs" />
-    <Compile Include="Jobs\JobGiver_Digest.cs" />
-    <Compile Include="Jobs\JobGiver_Escape.cs" />
-    <Compile Include="Jobs\JobsDefOf.cs" />
-    <Compile Include="Renderer\PawnRenderNode_Swallowing.cs" />
-    <Compile Include="Think\ThinkNode_ConditionalStalkerState.cs" />
-    <Compile Include="Util\StalkerState.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <PackageReference Include="Lib.Harmony">
-      <Version>2.3.3</Version>
-    </PackageReference>
-  </ItemGroup>
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
-         Other similar extension points exist, see Microsoft.Common.targets.
-    <Target Name="BeforeBuild">
-    </Target>
-    <Target Name="AfterBuild">
-    </Target>
-    -->
-  <ItemDefinitionGroup>
-    <Reference>
-      <Private>False</Private>
-    </Reference>
-    <ProjectReference>
-      <Private>False</Private>
-    </ProjectReference>
-    <PackageReference>
-      <ExcludeAssets>runtime</ExcludeAssets>
-    </PackageReference>
-  </ItemDefinitionGroup>
+<Project Sdk="Microsoft.NET.Sdk">
+    <PropertyGroup>
+        <OutputType>Library</OutputType>
+        <TargetFramework>net472</TargetFramework>
+        <PlatformTarget>x64</PlatformTarget>
+
+        <RootNamespace>EbonRiseV2</RootNamespace>
+        <AssemblyName>Ebon_Rise_V2</AssemblyName>
+        <OutputPath>../Assemblies</OutputPath>
+        <VersionPrefix>1.0.0</VersionPrefix>
+
+        <!-- do not generate pdb file -->
+        <DebugType>none</DebugType>
+
+        <DebugSymbols>false</DebugSymbols>
+        <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+        <LangVersion>9.0</LangVersion>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <!-- Rimworld -->
+        <Reference Include="../../../RimWorldWin64_Data/Managed/*.dll">
+            <Private>False</Private>
+        </Reference>
+        
+        <!-- Harmony -->
+        <PackageReference Include="Lib.Harmony" Version="2.3.5" ExcludeAssets="runtime"/>
+    </ItemGroup>
 </Project>

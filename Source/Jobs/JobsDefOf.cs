@@ -3,7 +3,7 @@ using Verse;
 
 namespace EbonRiseV2.Jobs
 {
-    [RimWorld.DefOf]
+    [DefOf]
     public static class JobsDefOf
     {
         public static JobDef SF_Stalker_Swallow;

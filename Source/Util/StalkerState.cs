@@ -5,8 +5,6 @@ namespace EbonRiseV2.Util
         Stalking,
         Swallowing,
         Escaping,
-        Digesting,
-        Docile,
-        DocileHolding
+        Digesting
     }
 }

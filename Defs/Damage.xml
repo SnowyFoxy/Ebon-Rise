@@ -1,0 +1,13 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+    <DamageDef ParentName="Flame">
+        <defName>SF_DigestiveAcid_Injury</defName>
+        <label>digestive acid burn</label>
+        <workerClass>DamageWorker_AddInjury</workerClass>
+        <hediff>SF_DigestiveAcid</hediff>
+        <externalViolence>false</externalViolence>
+        <hasForcefulImpact>false</hasForcefulImpact>
+        <deathMessage>{0} was digested.</deathMessage>
+        <makesBlood>false</makesBlood>
+    </DamageDef>
+</Defs>

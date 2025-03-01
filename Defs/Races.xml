@@ -58,17 +58,18 @@
 				<soundAttack>Pawn_Devourer_Attack</soundAttack>
 			</li>
 		</lifeStageAges>
+		<renderTree>SF_RenderTreeStalker</renderTree>
 		<corpseHiddenWhileUndiscovered>true</corpseHiddenWhileUndiscovered>
 	</race>
 
 	<comps>
-		<li Class="EbonRiseV2.Comps.CompProperties_SF_Stalker">
+		<li Class="EbonRiseV2.Comps.CompProperties_Stalker">
 			<messageSwallowed>A Rift Stalker has swallowed {PAWN_nameDef}! get them out before they start getting digested!</messageSwallowed>
 			<messageDigested>A devourer swallowed {PAWN_nameDef} whole! Kill the devourer before it digests {PAWN_nameDef}.</messageDigested>
 			<messageEmerged>{PAWN_nameDef} emerged from the devourer.</messageEmerged>
 			<messageEmergedCorpse>{PAWN_nameDef} emerged from the devourer's corpse.</messageEmergedCorpse>
 			<messageDigestionCompleted>The devourer has regurgitated {PAWN_nameDef}.</messageDigestionCompleted>
-			<digestingInspector>Digesting {PAWN_nameDef}: {SECONDS} seconds left</digestingInspector>
+			<digestingInspector>Digesting {PAWN_nameDef}: {HOURS} hours left</digestingInspector>
 			<completeDigestionDamage>200</completeDigestionDamage>
 			<bodySizeDigestTimeCurve>
 				<points>

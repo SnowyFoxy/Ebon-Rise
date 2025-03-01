@@ -19,12 +19,10 @@ namespace EbonRiseV2.Renderer
             Graphic graphic = pawn.ageTracker.CurKindLifeStage.bodyGraphicData.Graphic;
             
             if (comp.stalkerState == StalkerState.Swallowing)
-            {
-                Log.Message("Swallowing! " + GraphicDatabase.Get<Graphic_Multi>(graphic.path + "_middle", graphic.Shader, graphic.drawSize, Color.white));
+            { 
                 return GraphicDatabase.Get<Graphic_Multi>(graphic.path + "_middle", graphic.Shader, graphic.drawSize, Color.white);
             }
             
-            Log.Message("Swallowed? " + comp.Swallowed);
             return comp.Swallowed ? GraphicDatabase.Get<Graphic_Multi>(graphic.path + "_Closed", graphic.Shader, graphic.drawSize, Color.white) : 
                 base.GraphicFor(pawn);
         }
