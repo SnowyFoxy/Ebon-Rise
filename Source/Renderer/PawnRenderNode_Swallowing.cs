@@ -14,9 +14,7 @@ namespace EbonRiseV2.Renderer
         
         public override Graphic GraphicFor(Pawn pawn)
         {
-            var comp = pawn?.GetComp<Comp_Stalker>();
-
-            if (comp == null || children == null) return null;
+            if (!pawn.TryGetComp<Comp_Stalker>(out var comp)) return base.GraphicFor(pawn);
             
             Graphic graphic = pawn.ageTracker.CurKindLifeStage.bodyGraphicData.Graphic;
             
@@ -26,7 +24,7 @@ namespace EbonRiseV2.Renderer
                 return GraphicDatabase.Get<Graphic_Multi>(graphic.path + "_middle", graphic.Shader, graphic.drawSize, Color.white);
             }
             
-            Log.Message("Swallowed? " + comp.Swallowed + " for ");
+            Log.Message("Swallowed? " + comp.Swallowed);
             return comp.Swallowed ? GraphicDatabase.Get<Graphic_Multi>(graphic.path + "_Closed", graphic.Shader, graphic.drawSize, Color.white) : 
                 base.GraphicFor(pawn);
         }
