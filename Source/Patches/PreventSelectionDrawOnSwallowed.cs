@@ -1,6 +1,8 @@
+using System.Linq;
 using EbonRiseV2.Comps;
 using HarmonyLib;
 using RimWorld;
+using RimWorld.Planet;
 using UnityEngine;
 using Verse;
 
@@ -15,12 +17,26 @@ namespace EbonRiseV2.Patches
         }
     }
     
-    [HarmonyPatch(typeof(ColonistBarColonistDrawer), "HandleClicks")]
+    [HarmonyPatch(typeof(CameraJumper), "TryJumpInternal", typeof(Thing), typeof(CameraJumper.MovementMode))]
     public class PreventCameraJumpingOnSwallowed
     {
-        private static bool Prefix(Pawn colonist)
+        private static bool Prefix(Thing thing)
         {
-            return Event.current.type == EventType.MouseDown && Event.current.button == 0 && Event.current.clickCount == 2 && colonist is not { ParentHolder: Comp_Stalker };
+            if (thing.TryGetComp<Comp_Stalker>(out var stalker))
+            {
+                return thing.Faction == Faction.OfPlayer || !stalker.Swallowed;
+            }
+
+            return true;
+        }
+    }
+    
+    [HarmonyPatch(typeof(TargetHighlighter), "Highlight")]
+    public class PreventTargetHighlighting
+    {
+        private static bool Prefix(GlobalTargetInfo target)
+        {
+            return target.Thing is not Pawn { ParentHolder: Comp_Stalker };
         }
     }
 }

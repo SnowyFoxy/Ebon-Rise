@@ -26,7 +26,7 @@ namespace EbonRiseV2.Comps
         private HediffComp_Invisibility invisibility;
         private BodyPartRecord[] targetting;
 
-        private int lastSeenLetterTick = -99999;
+        public int lastSeenLetterTick = -99999;
         public int becomeInvisibleTick = -99999;
 
         public bool Swallowed => SwallowedThing != null;
@@ -89,14 +89,13 @@ namespace EbonRiseV2.Comps
                 if (stalkerState == StalkerState.Escaping)
                 {
                     stalkerState = StalkerState.Digesting;
-                    Pawn.jobs.EndCurrentJob(JobCondition.InterruptForced);
                 }
 
                 Invisibility.BecomeInvisible();
                 becomeInvisibleTick = int.MaxValue;
             }
             
-            if (Pawn.IsHashIntervalTick(90))
+            if (Pawn.IsHashIntervalTick(90) && Pawn.Faction != Faction.OfPlayer)
                 CheckIfSeen();
 
             if (!Swallowed) return;
@@ -155,7 +154,7 @@ namespace EbonRiseV2.Comps
 
         private void CheckIfSeen()
         {
-            if (!Find.AnalysisManager.TryGetAnalysisProgress(biosignature, out var details) || !details.Satisfied)
+            if (!Find.AnalysisManager.TryGetAnalysisProgress(biosignature, out var details))
                 return;
             List<Pawn> colonistsSpawned = Pawn.Map.mapPawns.FreeColonistsSpawned;
             var pawn = colonistsSpawned.FirstOrDefault(pawn => !PawnUtility.IsBiologicallyOrArtificiallyBlind(pawn) &&
@@ -170,7 +169,7 @@ namespace EbonRiseV2.Comps
             if (Pawn.IsPsychologicallyInvisible() &&
                 Find.TickManager.TicksGame > lastSeenLetterTick + 1200)
             {
-                Find.LetterStack.ReceiveLetter("Rift Stalker Spotted", pawn.Name + " has spotted a Rift Stalker!",
+                Find.LetterStack.ReceiveLetter("Rift Stalker Spotted", pawn + " has spotted a Rift Stalker!",
                     LetterDefOf.ThreatBig,
                     (Thing)pawn);
                 lastSeenLetterTick = Find.TickManager.TicksGame;
@@ -178,6 +177,7 @@ namespace EbonRiseV2.Comps
 
             Invisibility.BecomeVisible();
             becomeInvisibleTick = Find.TickManager.TicksGame + 140;
+            stalkerState = StalkerState.Escaping;
         }
 
         private void GetHitParts()

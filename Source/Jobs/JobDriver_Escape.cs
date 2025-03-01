@@ -36,6 +36,7 @@ namespace EbonRiseV2.Jobs
             };
             toil1.AddFinishAction(() =>
             {
+                Log.Message("Spawned fur clump!");
                 Thing furClump = ThingMaker.MakeThing(MiscDefOf.SF_FurClump);
                 furClump.TryGetComp<CompAnalyzableBiosignature>().biosignature = Comp.biosignature;
                 Thing spawnedFurClump = GenSpawn.Spawn(furClump, pawn.PositionHeld, pawn.Map);
