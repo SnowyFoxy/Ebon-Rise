@@ -21,4 +21,11 @@
         <driverClass>EbonRiseV2.Jobs.JobDriver_FeedStalker</driverClass>
         <reportString>feeding</reportString>
     </JobDef>
+    <JobDef>
+        <defName>SF_CastStalkerJump</defName>
+        <driverClass>EbonRiseV2.Jobs.JobDriver_CastStalkerJump</driverClass>
+        <allowOpportunisticPrefix>false</allowOpportunisticPrefix>
+        <carryThingAfterJob>true</carryThingAfterJob>
+        <dropThingBeforeJob>false</dropThingBeforeJob>
+    </JobDef>
 </Defs>

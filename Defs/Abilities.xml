@@ -1,10 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
 <Defs>
     <AbilityDef>
         <defName>SF_Swallow</defName>
         <label>Swallow leap</label>
         <description>Swallow a target whole</description>
         <cooldownTicksRange>3600</cooldownTicksRange>
-        <jobDef>CastJump</jobDef>
+        <jobDef>SF_CastStalkerJump</jobDef>
         <ai_IsOffensive>true</ai_IsOffensive>
         <aiCanUse>true</aiCanUse>
         <verbProperties>

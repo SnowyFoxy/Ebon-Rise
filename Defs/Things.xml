@@ -1,0 +1,82 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+    <ThingDef>
+        <defName>SF_FurClump</defName>
+        <label>rift stalker fur clump</label>
+        <description>A clump of fur from a fleeing rift stalker.</description>
+        <thingClass>ThingWithComps</thingClass>
+        <category>Item</category>
+        <genericMarketSellable>false</genericMarketSellable>
+        <drawerType>MapMeshOnly</drawerType>
+        <tickerType>Normal</tickerType>
+        <rotatable>false</rotatable>
+        <altitudeLayer>Item</altitudeLayer>
+        <selectable>true</selectable>
+        <alwaysHaulable>true</alwaysHaulable>
+        <drawGUIOverlay>true</drawGUIOverlay>
+        <scatterableOnMapGen>false</scatterableOnMapGen>
+        <graphicData>
+            <texPath>Things/Item/Resource/RevenantFleshChunk</texPath>
+            <graphicClass>Graphic_Single</graphicClass>
+            <drawSize>(0.75, 0.75)</drawSize>
+        </graphicData>
+        <soundInteract>Standard_Pickup</soundInteract>
+        <soundDrop>Standard_Drop</soundDrop>
+        <stackLimit>1</stackLimit>
+        <intricate>true</intricate>
+        <statBases>
+            <Mass>0.03</Mass>
+            <Beauty>-10</Beauty>
+            <MaxHitPoints>50</MaxHitPoints>
+            <Flammability>1.6</Flammability>
+            <DeteriorationRate>6</DeteriorationRate>
+        </statBases>
+        <thingCategories>
+            <li>ItemsMisc</li>
+        </thingCategories>
+        <hiddenWhileUndiscovered>true</hiddenWhileUndiscovered>
+        <comps>
+            <li Class="CompProperties_Forbiddable">
+                <forbidOnMake>true</forbidOnMake>
+            </li>
+            <li Class="CompProperties_CompAnalyzableBiosignature">
+                <analysisRequiredRange>5</analysisRequiredRange>
+                <analysisDurationHours>0.75</analysisDurationHours>
+                <destroyedOnAnalyzed>true</destroyedOnAnalyzed>
+                <allowRepeatAnalysis>true</allowRepeatAnalysis>
+                <ignoreForbidden>true</ignoreForbidden>
+                <canStudyInPlace>true</canStudyInPlace>
+
+                <progressedLetterLabel>Analysis progress</progressedLetterLabel>
+                <progressedLetters>
+                    <li>{PAWN_nameDef} has finished analyzing the rift stalker fur clump with biosignature {BIOSIGNATURE}.\n\n{PAWN_pronoun} learned more about this particular rift stalker's biology, allowing them to spot it from longer distances.</li>
+                    <li>{PAWN_nameDef} has finished analyzing the rift stalker fur clump with biosignature {BIOSIGNATURE}.\n\n{PAWN_pronoun} learned more about this particular rift stalker's biology, allowing them to spot it from longer distances.</li>
+                    <li>{PAWN_nameDef} has finished analyzing the rift stalker fur clump with biosignature {BIOSIGNATURE}.\n\n{PAWN_pronoun} learned more about this particular rift stalker's biology, allowing them to spot it from longer distances.</li>
+                    <li>{PAWN_nameDef} has finished analyzing the rift stalker fur clump with biosignature {BIOSIGNATURE}.\n\n{PAWN_pronoun} learned more about this particular rift stalker's biology, allowing them to spot it from longer distances.</li>
+                </progressedLetters>
+                <progressedLetterDef>NeutralEvent</progressedLetterDef>
+
+                <completedLetterLabel>Analysis progress</completedLetterLabel>
+                <completedLetter>{PAWN_nameDef} has finished analyzing the rift stalker fur clump with biosignature {BIOSIGNATURE}.\n\n{PAWN_pronoun} has learned all they can about the rift stalker, maximizing the distance it can be spotted from.</completedLetter>
+                <completedLetterDef>NeutralEvent</completedLetterDef>
+
+                <!-- Interactable -->
+
+                <activateTexPath>UI/Commands/Analyze</activateTexPath>
+
+                <activateLabelString>Analyze...</activateLabelString>
+                <activateDescString>Analyze the fur clump. Analyzing this fur sample will give you tools to track and reveal the rift stalker.</activateDescString>
+                <jobString>Analyze rift stalker</jobString>
+                <guiLabelString>Choose who should analyze this</guiLabelString>
+                <inspectString>Can be analyzed by a colonist.</inspectString>
+
+                <targetingParameters>
+                    <canTargetBuildings>false</canTargetBuildings>
+                    <canTargetAnimals>false</canTargetAnimals>
+                    <canTargetMechs>false</canTargetMechs>
+                    <onlyTargetControlledPawns>true</onlyTargetControlledPawns>
+                </targetingParameters>
+            </li>
+        </comps>
+    </ThingDef>
+</Defs>

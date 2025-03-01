@@ -10,6 +10,7 @@ namespace EbonRiseV2.Util
         public static HediffDef SF_AcidResist;
 
         public static DamageDef SF_DigestiveAcid_Injury;
+        public static ThingDef SF_FurClump;
 
         static MiscDefOf()
         {

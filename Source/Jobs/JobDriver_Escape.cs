@@ -1,9 +1,7 @@
-using System;
 using System.Collections.Generic;
 using EbonRiseV2.Comps;
 using EbonRiseV2.Util;
 using RimWorld;
-using UnityEngine;
 using Verse;
 using Verse.AI;
 
@@ -11,9 +9,6 @@ namespace EbonRiseV2.Jobs
 {
     public class JobDriver_Escape : JobDriver
     {
-        private static int DetectionRangeSquared = 25;
-        private static int MinEscapeTime = 300;
-        private static int EscapedCheckInterval = 120;
         private static int SmearMTBTicks = 60;
 
         private Comp_Stalker Comp => pawn.TryGetComp<Comp_Stalker>();
@@ -26,14 +21,10 @@ namespace EbonRiseV2.Jobs
 
         protected override IEnumerable<Toil> MakeNewToils()
         {
-            var becomeInvisibleTick = Find.TickManager.TicksGame + MinEscapeTime;
             Toil toil1 = Toils_Goto.GotoCell(TargetIndex.A, PathEndMode.OnCell);
             toil1.tickAction += () =>
             {
-                if (Find.TickManager.TicksGame % EscapedCheckInterval == 0 &&
-                    Find.TickManager.TicksGame > becomeInvisibleTick &&
-                    !pawn.Map.mapPawns.FreeColonistsSpawned.Any(other =>
-                        pawn.Position.DistanceToSquared(other.Position) < DetectionRangeSquared))
+                if (Comp.Pawn.IsPsychologicallyInvisible())
                 {
                     ReadyForNextToil();
                 }
@@ -43,18 +34,17 @@ namespace EbonRiseV2.Jobs
                     FilthMaker.TryMakeFilth(pawn.Position, pawn.Map, ThingDefOf.Filth_RevenantSmear);
                 }
             };
-            yield return toil1;
-
-            Toil toil2 = Toils_Goto.GotoCell(TargetIndex.A, PathEndMode.OnCell);
-            toil2.initAction = () => { Comp.Invisibility.BecomeInvisible(); };
-            toil2.finishActions = new List<Action>
+            toil1.AddFinishAction(() =>
             {
-                () =>
-                {
-                    Comp.stalkerState = StalkerState.Digesting;
-                }
-            };
-            yield return toil2;
+                Thing furClump = ThingMaker.MakeThing(MiscDefOf.SF_FurClump);
+                furClump.TryGetComp<CompAnalyzableBiosignature>().biosignature = Comp.biosignature;
+                Thing spawnedFurClump = GenSpawn.Spawn(furClump, pawn.PositionHeld, pawn.Map);
+                Find.LetterStack.ReceiveLetter("Fur Clump", 
+                    "A fur clump has fallen from a fleeing Rift Stalker. It could be analyzed to track it down.", 
+                    LetterDefOf.NeutralEvent, spawnedFurClump, delayTicks: 600);
+            });
+            yield return toil1;
+            yield return Toils_Goto.GotoCell(TargetIndex.A, PathEndMode.OnCell);
         }
     }
 }

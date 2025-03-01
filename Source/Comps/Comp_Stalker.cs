@@ -8,6 +8,7 @@ using RimWorld;
 using UnityEngine;
 using Verse;
 using Verse.AI;
+using Verse.Grammar;
 using AbilityDefOf = EbonRiseV2.Abilities.AbilityDefOf;
 
 namespace EbonRiseV2.Comps
@@ -17,12 +18,16 @@ namespace EbonRiseV2.Comps
         private static int DigestTickInterval = 600;
 
         public StalkerState stalkerState;
+        public int biosignature;
 
         private ThingOwner<Thing> innerContainer;
         private int startedDigest;
         private bool wasDrafted;
         private HediffComp_Invisibility invisibility;
         private BodyPartRecord[] targetting;
+
+        private int lastSeenLetterTick = -99999;
+        public int becomeInvisibleTick = -99999;
 
         public bool Swallowed => SwallowedThing != null;
         public Pawn Pawn => parent as Pawn;
@@ -72,17 +77,34 @@ namespace EbonRiseV2.Comps
             innerContainer = new ThingOwner<Thing>(this);
         }
 
+        public override void PostPostMake() => biosignature = Rand.Int;
+
         public override void CompTick()
         {
             base.CompTick();
             innerContainer.ThingOwnerTick(false);
+
+            if (Find.TickManager.TicksGame > becomeInvisibleTick)
+            {
+                if (stalkerState == StalkerState.Escaping)
+                {
+                    stalkerState = StalkerState.Digesting;
+                    Pawn.jobs.EndCurrentJob(JobCondition.InterruptForced);
+                }
+
+                Invisibility.BecomeInvisible();
+                becomeInvisibleTick = int.MaxValue;
+            }
+            
+            if (Pawn.IsHashIntervalTick(90))
+                CheckIfSeen();
 
             if (!Swallowed) return;
 
             Find.BattleLog.Add(new BattleLogEntry_Event(SwallowedPawn, RulePackDefOf.Event_DevourerDigestionAborted,
                 Pawn));
             if (Find.TickManager.TicksGame % DigestTickInterval != 0) return;
-            
+
             if (Find.TickManager.TicksGame % DigestTickInterval * 10 == 0)
             {
                 foreach (var missing in
@@ -92,10 +114,11 @@ namespace EbonRiseV2.Comps
                     // Max the age to prevent bleeding on every single wound.
                     missing.ageTicks = 100000;
                 }
+
                 GetHitParts();
             }
 
-            DamageInfo dinfo = new DamageInfo(MiscDefOf.SF_DigestiveAcid_Injury, 0.13f, 
+            DamageInfo dinfo = new DamageInfo(MiscDefOf.SF_DigestiveAcid_Injury, 0.13f,
                 0f, -1f, Pawn, spawnFilth: false);
             dinfo.SetApplyAllDamage(value: true);
             dinfo.SetIgnoreArmor(true);
@@ -130,6 +153,33 @@ namespace EbonRiseV2.Comps
             Pawn.needs.food.CurLevel += 0.01f;
         }
 
+        private void CheckIfSeen()
+        {
+            if (!Find.AnalysisManager.TryGetAnalysisProgress(biosignature, out var details) || !details.Satisfied)
+                return;
+            List<Pawn> colonistsSpawned = Pawn.Map.mapPawns.FreeColonistsSpawned;
+            var pawn = colonistsSpawned.FirstOrDefault(pawn => !PawnUtility.IsBiologicallyOrArtificiallyBlind(pawn) &&
+                                                               Pawn.PositionHeld.InHorDistOf(pawn.PositionHeld, Math.Min(details.timesDone, 6) * 5.0f) &&
+                                                               GenSight.LineOfSightToThing(pawn.PositionHeld, Pawn,
+                                                                   Pawn.Map));
+            if (pawn == null)
+            {
+                return;
+            }
+
+            if (Pawn.IsPsychologicallyInvisible() &&
+                Find.TickManager.TicksGame > lastSeenLetterTick + 1200)
+            {
+                Find.LetterStack.ReceiveLetter("Rift Stalker Spotted", pawn.Name + " has spotted a Rift Stalker!",
+                    LetterDefOf.ThreatBig,
+                    (Thing)pawn);
+                lastSeenLetterTick = Find.TickManager.TicksGame;
+            }
+
+            Invisibility.BecomeVisible();
+            becomeInvisibleTick = Find.TickManager.TicksGame + 140;
+        }
+
         private void GetHitParts()
         {
             var maxDamage = 10;
@@ -137,13 +187,15 @@ namespace EbonRiseV2.Comps
             {
                 maxDamage = int.MaxValue;
             }
+
             var hitOrgans = Find.TickManager.TicksGame - startedDigest > 120000;
 
-            
+
             targetting = SwallowedPawn.RaceProps.body.AllParts
                 .Where(part => !SwallowedPawn.health.hediffSet.PartIsMissing(part) && part.coverage > 0f &&
-                               part.def.hitPoints <= maxDamage && ((part.depth == BodyPartDepth.Outside && 
-                                                                    part.def.destroyableByDamage && !part.IsCorePart) || hitOrgans))
+                               part.def.hitPoints <= maxDamage && ((part.depth == BodyPartDepth.Outside &&
+                                                                    part.def.destroyableByDamage && !part.IsCorePart) ||
+                                                                   hitOrgans))
                 .ToArray();
         }
 
@@ -168,8 +220,14 @@ namespace EbonRiseV2.Comps
         }
 
         public override void Notify_Downed() => AbortSwallow();
-        
-        public override void Notify_Killed(Map prevMap, DamageInfo? dinfo) => AbortSwallow();
+
+        public override void Notify_Killed(Map prevMap, DamageInfo? dinfo = null)
+        {
+            Find.LetterStack.ReceiveLetter("Rift Stalker slain",
+                "The Rift Stalker has returned to whatever world it came from. It will be back…",
+                LetterDefOf.NeutralEvent);
+            AbortSwallow();
+        }
 
         #region Swallow
 
@@ -294,6 +352,7 @@ namespace EbonRiseV2.Comps
             base.PostExposeData();
             Scribe_Values.Look(ref stalkerState, "stalkerState");
             Scribe_Values.Look(ref startedDigest, "startedDigest");
+            Scribe_Values.Look(ref biosignature, "biosignature");
             Scribe_Values.Look(ref wasDrafted, "wasDrafted", defaultValue: false);
             Scribe_Deep.Look(ref innerContainer, "innerContainer", this);
         }
