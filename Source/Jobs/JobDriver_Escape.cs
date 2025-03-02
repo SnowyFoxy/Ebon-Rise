@@ -36,13 +36,17 @@ namespace EbonRiseV2.Jobs
             };
             toil1.AddFinishAction(() =>
             {
-                Log.Message("Spawned fur clump!");
+                if (Comp.lastFurClumpTick + 10000 < Find.TickManager.TicksGame || Find.AnalysisManager.TryGetAnalysisProgress(Comp.biosignature, out var details) && details.Satisfied)
+                {
+                    return;
+                }
                 Thing furClump = ThingMaker.MakeThing(MiscDefOf.SF_FurClump);
                 furClump.TryGetComp<CompAnalyzableBiosignature>().biosignature = Comp.biosignature;
                 Thing spawnedFurClump = GenSpawn.Spawn(furClump, pawn.PositionHeld, pawn.Map);
                 Find.LetterStack.ReceiveLetter("Fur Clump", 
                     "A fur clump has fallen from a fleeing Rift Stalker. It could be analyzed to track it down.", 
                     LetterDefOf.NeutralEvent, spawnedFurClump, delayTicks: 600);
+                Comp.lastFurClumpTick = Find.TickManager.TicksGame;
             });
             yield return toil1;
             yield return Toils_Goto.GotoCell(TargetIndex.A, PathEndMode.OnCell);

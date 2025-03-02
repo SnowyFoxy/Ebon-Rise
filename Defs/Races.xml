@@ -21,7 +21,7 @@
 	<race>
 		<body>SF_RiftStalker_Body</body>
 		<baseBodySize>4</baseBodySize>
-		<baseHealthScale>7.2</baseHealthScale>
+		<baseHealthScale>3.6</baseHealthScale>
 		<bloodDef IsNull="True"/>
 		<fleshType>EntityFlesh</fleshType>
 		
@@ -33,7 +33,7 @@
 
 		<needsRest>false</needsRest>
 		
-		<bleedRateFactor>0.5</bleedRateFactor>
+		<bleedRateFactor>0.75</bleedRateFactor>
 		<overrideShouldHaveAbilityTracker>true</overrideShouldHaveAbilityTracker>
 		
 		<isImmuneToInfections>true</isImmuneToInfections>
@@ -120,7 +120,7 @@
 			<capacities>
 				<li>Scratch</li>
 			</capacities>
-			<power>25</power>
+			<power>16</power>
 			<cooldownTime>2</cooldownTime>
 			<linkedBodyPartsGroup>FrontLeftClaw</linkedBodyPartsGroup>
 			<surpriseAttack>
@@ -138,7 +138,7 @@
 			<capacities>
 				<li>Scratch</li>
 			</capacities>
-			<power>25</power>
+			<power>16</power>
 			<cooldownTime>2</cooldownTime>
 			<linkedBodyPartsGroup>FrontRightClaw</linkedBodyPartsGroup>
 			<surpriseAttack>

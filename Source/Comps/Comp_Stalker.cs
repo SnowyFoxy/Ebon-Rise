@@ -28,6 +28,7 @@ namespace EbonRiseV2.Comps
         private BodyPartRecord[] targetting;
 
         public int lastSeenLetterTick = -99999;
+        public int lastFurClumpTick = -99999;
         public int becomeInvisibleTick = -99999;
 
         public bool Swallowed => SwallowedThing != null;
@@ -57,8 +58,8 @@ namespace EbonRiseV2.Comps
             {
                 if (invisibility != null)
                     return invisibility;
-                Hediff firstHediffOfDef = Pawn.health.hediffSet.GetFirstHediffOfDef(HediffDefOf.HoraxianInvisibility) ??
-                                          Pawn.health.AddHediff(HediffDefOf.HoraxianInvisibility);
+                Hediff firstHediffOfDef = Pawn.health.hediffSet.GetFirstHediffOfDef(MiscDefOf.SF_Invisibility) ??
+                                          Pawn.health.AddHediff(MiscDefOf.SF_Invisibility);
                 return invisibility = firstHediffOfDef?.TryGetComp<HediffComp_Invisibility>();
             }
         }
@@ -83,6 +84,8 @@ namespace EbonRiseV2.Comps
         public override void CompTick()
         {
             base.CompTick();
+            Log.Message(!Pawn.health.HasHediffsNeedingTendByPlayer() + " " + !HealthAIUtility.ShouldSeekMedicalRest(Pawn) 
+                        + " " + PawnUtility.ShouldSendNotificationAbout(Pawn));
             innerContainer.ThingOwnerTick(false);
 
             if (Pawn.Faction == Faction.OfPlayer && Pawn.needs.food.CurLevel == 0)
@@ -90,6 +93,7 @@ namespace EbonRiseV2.Comps
                 // Leave the player's faction when their stomach is empty
                 Pawn.SetFaction(Faction.OfEntities);
                 stalkerState = StalkerState.Stalking;
+                Pawn.jobs.EndCurrentJob(JobCondition.InterruptForced);
             }
 
             if (Find.TickManager.TicksGame > becomeInvisibleTick)
@@ -107,9 +111,7 @@ namespace EbonRiseV2.Comps
                 CheckIfSeen();
 
             if (!Swallowed) return;
-
-            Find.BattleLog.Add(new BattleLogEntry_Event(SwallowedPawn, RulePackDefOf.Event_DevourerDigestionAborted,
-                Pawn));
+            
             if (Find.TickManager.TicksGame % DigestTickInterval != 0) return;
 
             if (Find.TickManager.TicksGame % DigestTickInterval * 10 == 0)
@@ -180,7 +182,7 @@ namespace EbonRiseV2.Comps
                 Find.TickManager.TicksGame > lastSeenLetterTick + 1200)
             {
                 Find.LetterStack.ReceiveLetter("Rift Stalker Spotted", pawn + " has spotted a Rift Stalker!",
-                    LetterDefOf.ThreatBig,
+                    LetterDefOf.ThreatSmall,
                     (Thing)pawn);
                 lastSeenLetterTick = Find.TickManager.TicksGame;
             }
@@ -241,7 +243,7 @@ namespace EbonRiseV2.Comps
 
             if (Swallowed)
             {
-                feed.Disabled = Swallowed;
+                feed.Disabled = Swallowed || Pawn.needs.food.CurLevel > 0.75f;
                 feed.Label += " (Rift Stalker is already digesting " + SwallowedPawn + ")";
             }
 
@@ -332,6 +334,13 @@ namespace EbonRiseV2.Comps
                 }
             }
 
+            if (Pawn.Dead)
+            {
+                Pawn.Destroy();
+            }
+
+            Find.BattleLog.Add(new BattleLogEntry_Event(SwallowedPawn, RulePackDefOf.Event_DevourerDigestionAborted,
+                Pawn));
             Pawn.Drawer.renderer.SetAllGraphicsDirty();
         }
 
@@ -379,6 +388,7 @@ namespace EbonRiseV2.Comps
             Scribe_Values.Look(ref stalkerState, "stalkerState");
             Scribe_Values.Look(ref startedDigest, "startedDigest");
             Scribe_Values.Look(ref biosignature, "biosignature");
+            Scribe_Values.Look(ref lastFurClumpTick, "lastFurClumpTick");
             Scribe_Values.Look(ref wasDrafted, "wasDrafted", defaultValue: false);
             Scribe_Deep.Look(ref innerContainer, "innerContainer", this);
         }

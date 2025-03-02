@@ -29,4 +29,19 @@
             <canMerge>true</canMerge>
         </injuryProps>
     </HediffDef>
+    <HediffDef>
+        <hediffClass>HediffWithComps</hediffClass>
+        <defName>SF_Invisibility</defName>
+        <label>psychic invisibility</label>
+        <description>This creature is psychically twisting the perceptions of humans, animals, and machines in the vicinity in such a way as to seem invisible. The eye receives their image as normal but the mind cannot perceive it.</description>
+        <isBad>false</isBad>
+        <comps>
+            <li Class="HediffCompProperties_Invisibility">
+                <visibleToPlayer>false</visibleToPlayer>
+                <fadeDurationTicks>80</fadeDurationTicks>
+                <recoverFromDisruptedTicks>110</recoverFromDisruptedTicks>
+            </li>
+            <li Class="HediffCompProperties_DisappearsOnDeath" />
+        </comps>
+    </HediffDef>
 </Defs>
