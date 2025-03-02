@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ModMetaData>
     <name>Ebon Rise</name>
-    <author>"Snowy Fox, Coziii, DeVout, BigBadE"</author>
-    <packageId>SnowFox.Ebon_Rise</packageId>
-    <description>"A creature that only your dreams can imagine..."</description>
+    <author>"DeVout, BigBadE, Snowy Fox"</author>
+    <packageId>DeVout.Ebon_Rise</packageId>
+    <description>The code is created by: BigBadE and, in part, Snowy Fox.
+        The sprite of the Rift Stalker was created by: Anthitei
+        The Fur drop art was created by: timesnewroman910</description>
     <supportedVersions>
         <li>1.5</li>
     </supportedVersions>

@@ -7,7 +7,7 @@ namespace EbonRiseV2
     {
         public EbonRise(ModContentPack content) : base(content)
         {
-            var harmony = new Harmony("SnowFox.EbonRiseV2");
+            var harmony = new Harmony("DeVout.EbonRiseV2");
             harmony.PatchAll();
         }
     }
