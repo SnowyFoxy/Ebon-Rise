@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using EbonRiseV2.Jobs;
 using EbonRiseV2.Util;
@@ -13,7 +14,7 @@ using AbilityDefOf = EbonRiseV2.Abilities.AbilityDefOf;
 
 namespace EbonRiseV2.Comps
 {
-    public class Comp_Stalker : CompInteractable, IThingHolder
+    public class Comp_Stalker : ThingComp, IThingHolder
     {
         private static int DigestTickInterval = 600;
 
@@ -217,16 +218,34 @@ namespace EbonRiseV2.Comps
                 ticksToDeath.Named("HOURS"));
         }
 
-        protected override void OnInteracted(Pawn caster)
+        public override IEnumerable<FloatMenuOption> CompFloatMenuOptions(Pawn selPawn)
         {
-            FloatMenuUtility.MakeMenu(
-                caster.Map.mapPawns.FreeColonistsAndPrisonersSpawned.Where(other => other != caster),
-                pawn => pawn.Name.ToStringFull,
-                chosen =>
+            if (Pawn.Spawned && Pawn.Faction != Faction.OfPlayer) yield break;
+            FloatMenuOption feed = FloatMenuUtility.DecoratePrioritizedTask(new FloatMenuOption(StalkerProps.jobString.CapitalizeFirst(), 
+                () =>
                 {
-                    return () => caster.jobs.StartJob(JobMaker.MakeJob(JobsDefOf.SF_Stalker_FeedStalker, chosen, Pawn),
-                        JobCondition.InterruptForced);
-                });
+                    Find.Targeter.BeginTargeting(new TargetingParameters
+                    {
+                        canTargetBuildings = false,
+                        onlyTargetColonistsOrPrisonersOrSlaves = true,
+                        validator = t => !t.HasThing || t.Thing is not Pawn thing || !PrisonBreakUtility.IsPrisonBreaking(thing)
+                    }, target =>
+                    {
+                        selPawn.jobs.StartJob(
+                            target == selPawn
+                                ? JobMaker.MakeJob(JobsDefOf.SF_Stalker_FeedStalkerSelf, Pawn)
+                                : JobMaker.MakeJob(JobsDefOf.SF_Stalker_FeedStalker, target, Pawn),
+                            JobCondition.InterruptForced);
+                    });
+                }), selPawn, Pawn.SpawnedParentOrMe);
+
+            if (Swallowed)
+            {
+                feed.Disabled = Swallowed;
+                feed.Label += " (Rift Stalker is already digesting " + SwallowedPawn + ")";
+            }
+
+            yield return feed;
         }
 
         public override void Notify_Downed() => AbortSwallow();

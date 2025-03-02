@@ -1,7 +1,5 @@
-using System;
 using System.Collections.Generic;
 using EbonRiseV2.Comps;
-using EbonRiseV2.Util;
 using RimWorld;
 using Verse;
 using Verse.AI;
@@ -10,12 +8,9 @@ namespace EbonRiseV2.Jobs
 {
     public class JobDriver_FeedStalker : JobDriver
     {
-        private const TargetIndex TakeeIndex = TargetIndex.A;
-        private const TargetIndex FeedingIndex = TargetIndex.B;
+        private Pawn Takee => (Pawn)job.GetTarget(TargetIndex.A).Thing;
 
-        protected Pawn Takee => (Pawn)this.job.GetTarget(TargetIndex.A).Thing;
-
-        protected Pawn Feeding => (Pawn)this.job.GetTarget(TargetIndex.B).Thing;
+        private Pawn Feeding => (Pawn)job.GetTarget(TargetIndex.B).Thing;
 
 
         public override string GetReport()

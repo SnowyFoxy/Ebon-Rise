@@ -3,8 +3,9 @@ using Verse;
 
 namespace EbonRiseV2.Comps
 {
-    public class CompProperties_Stalker : CompProperties_Interactable
+    public class CompProperties_Stalker : CompProperties
     {
+        [MustTranslate] public string jobString;
         [MustTranslate] public string messageSwallowed;
         [MustTranslate] public string messageDigested;
         [MustTranslate] public string messageEmerged;

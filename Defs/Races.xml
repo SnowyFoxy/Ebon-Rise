@@ -79,20 +79,7 @@
 					<li>(3.5, 60)</li>
 				</points>
 			</bodySizeDigestTimeCurve>
-			<cooldownTicks>1</cooldownTicks>
-			<activeTicks>1</activeTicks>
-			<ticksToActivate>1</ticksToActivate>
 			<jobString>feed pawn to rift stalker</jobString>
-			<activateLabelString>Feed the rift stalker</activateLabelString>
-			<activateDescString>Feed the rift stalker with one of your colonists or prisoners. This will temporarily turn it docile, and it will join your colony.</activateDescString>
-			<activateTexPath>UI/Commands/SendNociosphere</activateTexPath>
-			<activatingString>{0} is feeding {1} to a rift stalker</activatingString>
-			<targetingParameters>
-				<canTargetBuildings>false</canTargetBuildings>
-				<canTargetAnimals>false</canTargetAnimals>
-				<canTargetMechs>false</canTargetMechs>
-				<onlyTargetControlledPawns>true</onlyTargetControlledPawns>
-			</targetingParameters>
 		</li>
 		<li Class="CompProperties_Studiable">
 			<frequencyTicks>120000</frequencyTicks>
