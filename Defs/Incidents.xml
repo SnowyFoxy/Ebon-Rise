@@ -1,0 +1,14 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+    <IncidentDef ParentName="AnomalyIncidentBase">
+        <defName>StalkerAttack</defName>
+        <label>stalker attack</label>
+        <targetTags>
+            <li>Map_PlayerHome</li>
+        </targetTags>
+        <workerClass>EbonRiseV2.Misc.IncidentWorker_StalkerAttack</workerClass>
+        <category>ThreatBig</category>
+        <baseChance>5</baseChance>
+        <minAnomalyThreatLevel>2</minAnomalyThreatLevel>
+    </IncidentDef>
+</Defs>

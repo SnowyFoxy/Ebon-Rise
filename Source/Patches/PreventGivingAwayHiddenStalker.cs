@@ -1,15 +1,13 @@
-using System.Linq;
 using EbonRiseV2.Comps;
 using HarmonyLib;
 using RimWorld;
 using RimWorld.Planet;
-using UnityEngine;
 using Verse;
 
 namespace EbonRiseV2.Patches
 {
     [HarmonyPatch(typeof(SelectionDrawer), "DrawSelectionBracketFor")]
-    public class PreventSelectionDrawOnSwallowed
+    public class PreventGivingAwayHiddenStalker
     {
         private static bool Prefix(object obj)
         {

@@ -1,0 +1,17 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+    <EntityCodexEntryDef>
+        <defName>SF_Stalkers</defName>
+        <label>rift stalker</label>
+        <description>Born from the shell of an eldritch Horror who attempted to invade the minds of man, the Riftstalker’s form was cast aside to wither away into nothing once more. However, the creature instead persisted, becoming a creature of its own right to exist. The Riftstalker has the ability to make itself invisible, warping light around it so as to make itself indetectable from vision. The Riftstalker survives off of the life force of Sapient creatures, with a twisted whimsical urge to consume the being whole simply because it can. It is possible to peer through its skin to see that it has recently eaten, and one may even have approximately three days to rescue the unfortunate individual.</description>
+        <uiIconPath>UI/CodexEntries/Riftstalker</uiIconPath>
+        <category>Advanced</category>
+        <linkedThings>
+            <li>SF_RiftStalker</li>
+        </linkedThings>
+        <provocationIncidents>
+            <li>StalkerAttack</li>
+        </provocationIncidents>
+        <orderInCategory>200</orderInCategory>
+    </EntityCodexEntryDef>
+</Defs>

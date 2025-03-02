@@ -32,13 +32,29 @@
                         <li Class="ThinkNode_Tagger">
                             <tagToGive>TrainedAnimalBehavior</tagToGive>
                             <subNodes>
-                                <!-- Consume leap enemies -->
-                                <li Class="JobGiver_AIAbilityFight">
-                                    <targetAcquireRadius>65</targetAcquireRadius>
-                                    <targetKeepRadius>72</targetKeepRadius>
-                                    <ability>SF_Swallow</ability>
+                                <!-- Consume leap a colonist if starving -->
+                                <li Class="ThinkNode_ConditionalStarving">
+                                    <subNodes>
+                                        <li Class="EbonRiseV2.Jobs.JobGiver_AIFightIgnoringFriendly">
+                                            <humanlikesOnly>true</humanlikesOnly>
+                                            <targetAcquireRadius>65</targetAcquireRadius>
+                                            <targetKeepRadius>72</targetKeepRadius>
+                                            <ability>SF_Swallow</ability>
+                                        </li>
+                                    </subNodes>
                                 </li>
-                                
+
+                                <!-- Trained behavior: attack: Fight enemies -->
+                                <li Class="ThinkNode_ConditionalTrainableCompleted">
+                                    <trainable>Obedience</trainable>
+                                    <subNodes>
+                                        <li Class="JobGiver_AIAbilityFight">
+                                            <targetAcquireRadius>25</targetAcquireRadius>
+                                            <targetKeepRadius>40</targetKeepRadius>
+                                        </li>
+                                    </subNodes>
+                                </li>
+
                                 <!-- Trained behavior: obedience: Follow and defend master -->
                                 <li Class="ThinkNode_ConditionalTrainableCompleted">
                                     <trainable>Obedience</trainable>
@@ -180,11 +196,12 @@
                 </li>
 
                 <!-- Stalking for food -->
-                <li Class="EbonRiseV2.Think.ThinkNode_ConditionalStalkerState">
+                <li Class="EbonRiseV2.Misc.ThinkNode_ConditionalStalkerState">
                     <state>Stalking</state>
                     <subNodes>
                         <!-- Consume leap a target -->
                         <li Class="JobGiver_AIAbilityFight">
+                            <humanlikesOnly>true</humanlikesOnly>
                             <targetAcquireRadius>65</targetAcquireRadius>
                             <targetKeepRadius>72</targetKeepRadius>
                             <ability>SF_Swallow</ability>
@@ -193,7 +210,7 @@
                 </li>
 
                 <!-- Escaping -->
-                <li Class="EbonRiseV2.Think.ThinkNode_ConditionalStalkerState">
+                <li Class="EbonRiseV2.Misc.ThinkNode_ConditionalStalkerState">
                     <state>Escaping</state>
                     <!-- Run away -->
                     <subNodes>
@@ -202,7 +219,7 @@
                 </li>
 
                 <!-- Digesting food -->
-                <li Class="EbonRiseV2.Think.ThinkNode_ConditionalStalkerState">
+                <li Class="EbonRiseV2.Misc.ThinkNode_ConditionalStalkerState">
                     <state>Digesting</state>
                     <!-- Sleep -->
                     <subNodes>

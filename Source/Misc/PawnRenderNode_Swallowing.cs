@@ -3,7 +3,7 @@ using EbonRiseV2.Util;
 using UnityEngine;
 using Verse;
 
-namespace EbonRiseV2.Renderer
+namespace EbonRiseV2.Misc
 {
     public class PawnRenderNode_Swallowing : PawnRenderNode_AnimalPart
     {

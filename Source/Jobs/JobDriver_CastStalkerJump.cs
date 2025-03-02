@@ -22,9 +22,13 @@ namespace EbonRiseV2.Jobs
             {
                 var comp = pawn.GetComp<Comp_Stalker>();
                 if (comp == null) return;
-                Find.LetterStack.ReceiveLetter("Rift Stalker Spotted", pawn.Name + " has spotted a Rift Stalker!",
-                    LetterDefOf.ThreatBig,
-                    (Thing)pawn);
+                if (pawn.Faction != Faction.OfPlayer)
+                {
+                    Find.LetterStack.ReceiveLetter("Rift Stalker Spotted", pawn + " has spotted a Rift Stalker!",
+                        LetterDefOf.ThreatBig,
+                        (Thing)pawn);
+                }
+
                 comp.lastSeenLetterTick = Find.TickManager.TicksGame;
                 comp.Invisibility.BecomeVisible();
                 comp.becomeInvisibleTick = Find.TickManager.TicksGame + 300;

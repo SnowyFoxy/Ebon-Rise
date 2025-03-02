@@ -3,7 +3,7 @@ using EbonRiseV2.Util;
 using Verse;
 using Verse.AI;
 
-namespace EbonRiseV2.Think
+namespace EbonRiseV2.Misc
 {
     public class ThinkNode_ConditionalStalkerState : ThinkNode_Conditional
     {

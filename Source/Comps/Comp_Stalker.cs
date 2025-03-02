@@ -84,6 +84,13 @@ namespace EbonRiseV2.Comps
             base.CompTick();
             innerContainer.ThingOwnerTick(false);
 
+            if (Pawn.Faction == Faction.OfPlayer && Pawn.needs.food.CurLevel == 0)
+            {
+                // Leave the player's faction when their stomach is empty
+                Pawn.SetFaction(Faction.OfEntities);
+                stalkerState = StalkerState.Stalking;
+            }
+
             if (Find.TickManager.TicksGame > becomeInvisibleTick)
             {
                 if (stalkerState == StalkerState.Escaping)
@@ -94,7 +101,7 @@ namespace EbonRiseV2.Comps
                 Invisibility.BecomeInvisible();
                 becomeInvisibleTick = int.MaxValue;
             }
-            
+
             if (Pawn.IsHashIntervalTick(90) && Pawn.Faction != Faction.OfPlayer)
                 CheckIfSeen();
 
@@ -134,6 +141,7 @@ namespace EbonRiseV2.Comps
 
             if (SwallowedPawn.Dead)
             {
+                AbortSwallow();
                 return;
             }
 
@@ -149,7 +157,7 @@ namespace EbonRiseV2.Comps
                 bloodloss.Severity = 0.0f;
             }
 
-            Pawn.needs.food.CurLevel += 0.01f;
+            Pawn.needs.food.CurLevel += 0.1f;
         }
 
         private void CheckIfSeen()
@@ -158,7 +166,8 @@ namespace EbonRiseV2.Comps
                 return;
             List<Pawn> colonistsSpawned = Pawn.Map.mapPawns.FreeColonistsSpawned;
             var pawn = colonistsSpawned.FirstOrDefault(pawn => !PawnUtility.IsBiologicallyOrArtificiallyBlind(pawn) &&
-                                                               Pawn.PositionHeld.InHorDistOf(pawn.PositionHeld, Math.Min(details.timesDone, 6) * 5.0f) &&
+                                                               Pawn.PositionHeld.InHorDistOf(pawn.PositionHeld,
+                                                                   Math.Min(details.timesDone, 6) * 5.0f) &&
                                                                GenSight.LineOfSightToThing(pawn.PositionHeld, Pawn,
                                                                    Pawn.Map));
             if (pawn == null)
@@ -204,7 +213,8 @@ namespace EbonRiseV2.Comps
             if (!Swallowed)
                 return null;
             float ticksToDeath = (startedDigest + 150000 - Find.TickManager.TicksGame) / 2500f;
-            return StalkerProps.digestingInspector.Formatted(SwallowedThing.Named("PAWN"), ticksToDeath.Named("HOURS"));
+            return StalkerProps.digestingInspector.Formatted(SwallowedThing.Named("PAWN"),
+                ticksToDeath.Named("HOURS"));
         }
 
         protected override void OnInteracted(Pawn caster)
@@ -242,6 +252,7 @@ namespace EbonRiseV2.Comps
 
             pawn.DeSpawn();
             pawn.health.AddHediff(MiscDefOf.SF_AcidResist);
+            
             innerContainer.TryAdd(pawn);
             startedDigest = Find.TickManager.TicksGame;
 
@@ -301,10 +312,6 @@ namespace EbonRiseV2.Comps
                     Messages.Message(str, pawn, MessageTypeDefOf.NeutralEvent);
                 }
             }
-
-            // Leave the player's faction when their stomach is empty
-            Pawn.SetFaction(Faction.OfEntities);
-            stalkerState = StalkerState.Stalking;
 
             Pawn.Drawer.renderer.SetAllGraphicsDirty();
         }

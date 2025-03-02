@@ -49,19 +49,19 @@
 
                 <progressedLetterLabel>Analysis progress</progressedLetterLabel>
                 <progressedLetters>
-                    <li>{PAWN_nameDef} has finished analyzing the rift stalker fur clump with biosignature {BIOSIGNATURE}.\n\n{PAWN_pronoun} learned more about this particular rift stalker's biology, allowing them to spot it from longer distances.</li>
-                    <li>{PAWN_nameDef} has finished analyzing the rift stalker fur clump with biosignature {BIOSIGNATURE}.\n\n{PAWN_pronoun} learned more about this particular rift stalker's biology, allowing them to spot it from longer distances.</li>
-                    <li>{PAWN_nameDef} has finished analyzing the rift stalker fur clump with biosignature {BIOSIGNATURE}.\n\n{PAWN_pronoun} learned more about this particular rift stalker's biology, allowing them to spot it from longer distances.</li>
-                    <li>{PAWN_nameDef} has finished analyzing the rift stalker fur clump with biosignature {BIOSIGNATURE}.\n\n{PAWN_pronoun} learned more about this particular rift stalker's biology, allowing them to spot it from longer distances.</li>
+                    <li>Whatever this creature is that attacked the settlement… It is something unusual. Not inherently evil, but not good either; driven purely on whim. It seems to stalk with an invisible presence, only reappearing when it is about to strike. We do not yet know how to fight this thing… but it left behind some clues we need to study. Perhaps we can rescue anyone it took before it's too late?</li>
+                    <li>Studying its anatomy with the little bits of fur we can recover has been… slow. We understand that it only shows up approximately once every three days to hunt, and it seems to prefer us over livestock or animals. We need more if we are to fight back.</li>
+                    <li>A breakthrough, at last! We figured out how to make it appear. By holding onto its fur, we can get an idea of how far away it is. Within about five feet it appears when normally it would not. If we keep going, we may discover more.</li>
+                    <li>It seems the creature is docile when it is fed. It does not appear aggressive when we are nearby; only when it's hunting for food. Perhaps we can make it docile… maybe turn it against our enemies? Who knows. But for now, we’re able to detect it from further away, and have a wider range of forcing it to appear.</li>
+                    <li>If I understand correctly, feeding someone to the creature might get it to leave us alone. Maybe using the Skip abduction ritual, or giving it a slave or prisoner, could do the trick. Keep it from hunting us at least. Maybe we can get it to fight for us too? Either way, more progress. Larger range of detection and a larger radius for which it appears. But there is not much left we can gleam.</li>
                 </progressedLetters>
                 <progressedLetterDef>NeutralEvent</progressedLetterDef>
 
                 <completedLetterLabel>Analysis progress</completedLetterLabel>
-                <completedLetter>{PAWN_nameDef} has finished analyzing the rift stalker fur clump with biosignature {BIOSIGNATURE}.\n\n{PAWN_pronoun} has learned all they can about the rift stalker, maximizing the distance it can be spotted from.</completedLetter>
+                <completedLetter>This is it. The most we can uncover from our studies. There is a way to make it docile, but first we must capture it. We will need to find it, attack it, and get the Rift Stalker into a containment cell. Once it's secured, we can try feeding it. Perhaps, get the creature to tolerate us and perhaps even work for our advantage. Or… if nothing else, kill it more easily. Either way, with this last research project. We have maximized our range of detection and how far we can make it reappear when nearby. Let us hope this is enough.</completedLetter>
                 <completedLetterDef>NeutralEvent</completedLetterDef>
 
                 <!-- Interactable -->
-
                 <activateTexPath>UI/Commands/Analyze</activateTexPath>
 
                 <activateLabelString>Analyze...</activateLabelString>

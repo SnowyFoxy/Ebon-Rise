@@ -10,7 +10,7 @@
                     <debugLabel>Body</debugLabel>
                     <tagDef>Body</tagDef>
                     <useRottenColor>true</useRottenColor>
-                    <nodeClass>EbonRiseV2.Renderer.PawnRenderNode_Swallowing</nodeClass>
+                    <nodeClass>EbonRiseV2.Misc.PawnRenderNode_Swallowing</nodeClass>
                     <children>
                         <li>
                             <debugLabel>Wounds</debugLabel>
