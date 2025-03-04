@@ -80,6 +80,10 @@
 				</points>
 			</bodySizeDigestTimeCurve>
 			<jobString>feed pawn to rift stalker</jobString>
+			
+			<affectedDamageDefs>
+				<li>EMP</li>
+			</affectedDamageDefs>
 		</li>
 		<li Class="CompProperties_Studiable">
 			<frequencyTicks>120000</frequencyTicks>

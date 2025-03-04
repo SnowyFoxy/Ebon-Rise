@@ -3,7 +3,7 @@ using Verse;
 
 namespace EbonRiseV2.Comps
 {
-    public class CompProperties_Stalker : CompProperties
+    public class CompProperties_Stalker : CompProperties_Stunnable
     {
         [MustTranslate] public string jobString;
         [MustTranslate] public string messageSwallowed;

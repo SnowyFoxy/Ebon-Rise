@@ -14,7 +14,7 @@ using AbilityDefOf = EbonRiseV2.Abilities.AbilityDefOf;
 
 namespace EbonRiseV2.Comps
 {
-    public class Comp_Stalker : ThingComp, IThingHolder
+    public class Comp_Stalker : CompStunnable, IThingHolder
     {
         private static int DigestTickInterval = 600;
 
@@ -28,6 +28,7 @@ namespace EbonRiseV2.Comps
         private BodyPartRecord[] targetting;
 
         public int lastSeenLetterTick = -99999;
+        public int lastSensedLetterTick = -99999;
         public int lastFurClumpTick = -99999;
         public int becomeInvisibleTick = -99999;
 
@@ -108,7 +109,10 @@ namespace EbonRiseV2.Comps
             }
 
             if (Pawn.IsHashIntervalTick(90) && Pawn.Faction != Faction.OfPlayer)
-                CheckIfSeen();
+                CheckIfSeen(false);
+            
+            if (Pawn.IsHashIntervalTick(60) && Pawn.Faction != Faction.OfPlayer)
+                CheckIfSeen(true);
 
             if (!Swallowed) return;
             
@@ -163,28 +167,38 @@ namespace EbonRiseV2.Comps
             Pawn.needs.food.CurLevel += 0.1f;
         }
 
-        private void CheckIfSeen()
+        private void CheckIfSeen(bool sensed)
         {
             if (!Find.AnalysisManager.TryGetAnalysisProgress(biosignature, out var details))
                 return;
             List<Pawn> colonistsSpawned = Pawn.Map.mapPawns.FreeColonistsSpawned;
             var pawn = colonistsSpawned.FirstOrDefault(pawn => !PawnUtility.IsBiologicallyOrArtificiallyBlind(pawn) &&
                                                                Pawn.PositionHeld.InHorDistOf(pawn.PositionHeld,
-                                                                   Math.Min(details.timesDone, 6) * 5.0f) &&
-                                                               GenSight.LineOfSightToThing(pawn.PositionHeld, Pawn,
-                                                                   Pawn.Map));
+                                                                   Math.Min(details.timesDone, 6) * 5.0f * (sensed ? 1.5f : 1.0f)) &&
+                                                               (sensed || GenSight.LineOfSightToThing(pawn.PositionHeld, Pawn,
+                                                                   Pawn.Map)));
             if (pawn == null)
             {
                 return;
             }
 
             if (Pawn.IsPsychologicallyInvisible() &&
-                Find.TickManager.TicksGame > lastSeenLetterTick + 1200)
+                Find.TickManager.TicksGame > (sensed ? lastSensedLetterTick : lastSeenLetterTick) + 1200)
             {
-                Find.LetterStack.ReceiveLetter("Rift Stalker Spotted", pawn + " has spotted a Rift Stalker!",
-                    LetterDefOf.ThreatSmall,
-                    (Thing)pawn);
-                lastSeenLetterTick = Find.TickManager.TicksGame;
+                if (sensed)
+                {
+                    lastSensedLetterTick = Find.TickManager.TicksGame;
+                    Find.LetterStack.ReceiveLetter("Rift Stalker Sensed", pawn + " senses a Rift Stalker nearby!",
+                        LetterDefOf.ThreatSmall,
+                        (Thing)pawn);
+                }
+                else
+                {
+                    lastSeenLetterTick = Find.TickManager.TicksGame;
+                    Find.LetterStack.ReceiveLetter("Rift Stalker Spotted", pawn + " has spotted a Rift Stalker!",
+                        LetterDefOf.ThreatSmall,
+                        (Thing)pawn);
+                }
             }
 
             Invisibility.BecomeVisible();
