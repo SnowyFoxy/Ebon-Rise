@@ -23,7 +23,7 @@
 				<dessicatedBodyGraphicData>
 					<texPath>Things/Pawn/Xeauvok/TwotailDevourer_dessicated</texPath>
 					<graphicClass>Graphic_Multi</graphicClass>
-					<drawSize>25</drawSize>
+					<drawSize>4.5</drawSize>
 					<attachPoints>
 						<li>
 							<offset>(-.4, 0, .85)</offset>
