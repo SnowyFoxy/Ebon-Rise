@@ -84,9 +84,12 @@ namespace EbonRiseV2.Comps
         public override void CompTick()
         {
             base.CompTick();
+            //Commented out for testing purposes
+            /*
             Log.Message(!Pawn.health.HasHediffsNeedingTendByPlayer() + " " + !HealthAIUtility.ShouldSeekMedicalRest(Pawn) 
-                        + " " + PawnUtility.ShouldSendNotificationAbout(Pawn));
+                        + " " + PawnUtility.ShouldSendNotificationAbout(Pawn));*/
             innerContainer.ThingOwnerTick(false);
+            
 
             if (Pawn.Faction == Faction.OfPlayer && Pawn.needs.food.CurLevel == 0)
             {
@@ -318,26 +321,27 @@ namespace EbonRiseV2.Comps
 
         private void AbortSwallow()
         {
+            Log.Message("looping");
             if (!Swallowed)
             {
                 return;
             }
 
+
             Pawn pawn = DropPawn();
-            if (pawn.Faction == Faction.OfPlayer)
+            if (pawn != null)
             {
-                string str = Pawn.Dead ? StalkerProps.messageEmergedCorpse : StalkerProps.messageEmerged;
-                if (!str.NullOrEmpty())
+                if (pawn.Faction == Faction.OfPlayer)
                 {
-                    str = str.Formatted(pawn.Named("PAWN"));
-                    Messages.Message(str, pawn, MessageTypeDefOf.NeutralEvent);
+                    string str = Pawn.Dead ? StalkerProps.messageEmergedCorpse : StalkerProps.messageEmerged;
+                    if (!str.NullOrEmpty())
+                    {
+                        str = str.Formatted(pawn.Named("PAWN"));
+                        Messages.Message(str, pawn, MessageTypeDefOf.NeutralEvent);
+                    }
                 }
             }
 
-            if (Pawn.Dead)
-            {
-                Pawn.Destroy();
-            }
 
             Find.BattleLog.Add(new BattleLogEntry_Event(SwallowedPawn, RulePackDefOf.Event_DevourerDigestionAborted,
                 Pawn));
@@ -369,7 +373,8 @@ namespace EbonRiseV2.Comps
 
             if (lastResultingThing is Corpse corpse)
             {
-                return corpse.InnerPawn;
+                corpse.Destroy();
+                return null;
             }
 
             Pawn pawn = (Pawn)lastResultingThing;

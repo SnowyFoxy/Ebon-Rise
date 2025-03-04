@@ -9,5 +9,6 @@
         <hasForcefulImpact>false</hasForcefulImpact>
         <deathMessage>{0} was digested.</deathMessage>
         <makesBlood>false</makesBlood>
+        <consideredHelpful>true</consideredHelpful>
     </DamageDef>
 </Defs>
