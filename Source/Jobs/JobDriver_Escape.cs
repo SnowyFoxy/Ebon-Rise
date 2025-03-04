@@ -21,6 +21,7 @@ namespace EbonRiseV2.Jobs
 
         protected override IEnumerable<Toil> MakeNewToils()
         {
+            pawn.jobs.jobQueue.Clear(pawn, true);
             Toil toil1 = Toils_Goto.GotoCell(TargetIndex.A, PathEndMode.OnCell);
             toil1.tickAction += () =>
             {
