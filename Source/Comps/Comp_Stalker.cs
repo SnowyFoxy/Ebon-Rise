@@ -1,15 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Drawing;
 using System.Linq;
 using EbonRiseV2.Jobs;
 using EbonRiseV2.Util;
-using JetBrains.Annotations;
 using RimWorld;
 using UnityEngine;
 using Verse;
 using Verse.AI;
-using Verse.Grammar;
 using AbilityDefOf = EbonRiseV2.Abilities.AbilityDefOf;
 
 namespace EbonRiseV2.Comps
@@ -85,8 +82,8 @@ namespace EbonRiseV2.Comps
         public override void CompTick()
         {
             base.CompTick();
-            Log.Message(!Pawn.health.HasHediffsNeedingTendByPlayer() + " " + !HealthAIUtility.ShouldSeekMedicalRest(Pawn) 
-                        + " " + PawnUtility.ShouldSendNotificationAbout(Pawn));
+            //Log.Message(!Pawn.health.HasHediffsNeedingTendByPlayer() + " " + !HealthAIUtility.ShouldSeekMedicalRest(Pawn) 
+            //            + " " + PawnUtility.ShouldSendNotificationAbout(Pawn));
             innerContainer.ThingOwnerTick(false);
 
             if (Pawn.Faction == Faction.OfPlayer && Pawn.needs.food.CurLevel == 0)
@@ -330,7 +327,7 @@ namespace EbonRiseV2.Comps
             Pawn.Drawer.renderer.SetAllGraphicsDirty();
         }
 
-        private void AbortSwallow()
+        public void AbortSwallow()
         {
             if (!Swallowed)
             {
@@ -356,6 +353,10 @@ namespace EbonRiseV2.Comps
             Find.BattleLog.Add(new BattleLogEntry_Event(SwallowedPawn, RulePackDefOf.Event_DevourerDigestionAborted,
                 Pawn));
             Pawn.Drawer.renderer.SetAllGraphicsDirty();
+            if (stalkerState == StalkerState.Digesting)
+            {
+                stalkerState = StalkerState.Stalking;
+            }
         }
 
         #endregion

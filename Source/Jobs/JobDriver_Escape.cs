@@ -34,9 +34,10 @@ namespace EbonRiseV2.Jobs
                     FilthMaker.TryMakeFilth(pawn.Position, pawn.Map, ThingDefOf.Filth_RevenantSmear);
                 }
             };
+            toil1.AddEndCondition(() => Comp.Pawn.IsPsychologicallyInvisible() ? JobCondition.Succeeded : JobCondition.Ongoing);
             toil1.AddFinishAction(() =>
             {
-                if (Comp.lastFurClumpTick + 10000 < Find.TickManager.TicksGame || Find.AnalysisManager.TryGetAnalysisProgress(Comp.biosignature, out var details) && details.Satisfied)
+                if (Comp.lastFurClumpTick + 10000 > Find.TickManager.TicksGame || Find.AnalysisManager.TryGetAnalysisProgress(Comp.biosignature, out var details) && details.Satisfied)
                 {
                     return;
                 }
@@ -49,7 +50,9 @@ namespace EbonRiseV2.Jobs
                 Comp.lastFurClumpTick = Find.TickManager.TicksGame;
             });
             yield return toil1;
-            yield return Toils_Goto.GotoCell(TargetIndex.A, PathEndMode.OnCell);
+            Toil toil2 = Toils_Goto.GotoCell(TargetIndex.B, PathEndMode.OnCell);
+            toil2.AddFinishAction(() => Comp.stalkerState = StalkerState.Digesting);
+            yield return toil2;
         }
     }
 }
