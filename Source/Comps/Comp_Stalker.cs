@@ -321,7 +321,6 @@ namespace EbonRiseV2.Comps
 
         private void AbortSwallow()
         {
-            Log.Message("looping");
             if (!Swallowed)
             {
                 return;
