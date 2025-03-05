@@ -334,6 +334,8 @@ namespace EbonRiseV2.Comps
                 return;
             }
 
+            Find.BattleLog.Add(new BattleLogEntry_Event(SwallowedPawn, RulePackDefOf.Event_DevourerDigestionAborted,
+                Pawn));
 
             Pawn pawn = DropPawn();
             if (pawn != null)
@@ -348,10 +350,7 @@ namespace EbonRiseV2.Comps
                     }
                 }
             }
-
-
-            Find.BattleLog.Add(new BattleLogEntry_Event(SwallowedPawn, RulePackDefOf.Event_DevourerDigestionAborted,
-                Pawn));
+            
             Pawn.Drawer.renderer.SetAllGraphicsDirty();
             if (stalkerState == StalkerState.Digesting)
             {
