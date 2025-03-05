@@ -35,7 +35,6 @@ namespace EbonRiseV2.Jobs
                     FilthMaker.TryMakeFilth(pawn.Position, pawn.Map, ThingDefOf.Filth_RevenantSmear);
                 }
             };
-            //toil1.AddEndCondition(() => Comp.Pawn.IsPsychologicallyInvisible() ? JobCondition.Succeeded : JobCondition.Ongoing);
             toil1.AddFinishAction(() =>
             {
                 if (Comp.lastFurClumpTick + 10000 > Find.TickManager.TicksGame || Find.AnalysisManager.TryGetAnalysisProgress(Comp.biosignature, out var details) && details.Satisfied)

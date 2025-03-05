@@ -82,8 +82,8 @@ namespace EbonRiseV2.Comps
         public override void CompTick()
         {
             base.CompTick();
-            //Log.Message(!Pawn.health.HasHediffsNeedingTendByPlayer() + " " + !HealthAIUtility.ShouldSeekMedicalRest(Pawn) 
-            //            + " " + PawnUtility.ShouldSendNotificationAbout(Pawn));
+            Log.Message(!Pawn.health.HasHediffsNeedingTendByPlayer() + " " + !HealthAIUtility.ShouldSeekMedicalRest(Pawn) 
+                        + " " + PawnUtility.ShouldSendNotificationAbout(Pawn));
             innerContainer.ThingOwnerTick(false);
 
             if (Pawn.Faction == Faction.OfPlayer && Pawn.needs.food.CurLevel == 0)
@@ -168,12 +168,12 @@ namespace EbonRiseV2.Comps
         {
             if (!Find.AnalysisManager.TryGetAnalysisProgress(biosignature, out var details))
                 return;
-            List<Pawn> colonistsSpawned = Pawn.Map.mapPawns.FreeColonistsSpawned;
+            List<Pawn> colonistsSpawned = Pawn.MapHeld.mapPawns.FreeColonistsSpawned;
             var pawn = colonistsSpawned.FirstOrDefault(pawn => !PawnUtility.IsBiologicallyOrArtificiallyBlind(pawn) &&
                                                                Pawn.PositionHeld.InHorDistOf(pawn.PositionHeld,
                                                                    Math.Min(details.timesDone, 6) * 5.0f * (sensed ? 1.5f : 1.0f)) &&
                                                                (sensed || GenSight.LineOfSightToThing(pawn.PositionHeld, Pawn,
-                                                                   Pawn.Map)));
+                                                                   Pawn.MapHeld)));
             if (pawn == null)
             {
                 return;
