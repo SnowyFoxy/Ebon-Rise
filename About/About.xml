@@ -16,5 +16,9 @@
             <steamWorkshopUrl>steam://url/CommunityFilePage/2009463077</steamWorkshopUrl>
             <downloadUrl>https://github.com/pardeike/HarmonyRimWorld/releases/latest</downloadUrl>
         </li>
+        <li>
+            <packageId>ludeon.rimworld.anomaly</packageId>
+            <displayName>Anomaly</displayName>
+        </li>
     </modDependencies>
 </ModMetaData>
