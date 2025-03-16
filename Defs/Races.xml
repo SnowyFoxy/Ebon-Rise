@@ -22,7 +22,7 @@
 		<body>SF_RiftStalker_Body</body>
 		<baseBodySize>4</baseBodySize>
 		<baseHealthScale>3.6</baseHealthScale>
-		<bloodDef IsNull="True"/>
+		<bloodDef>Filth_DarkBlood</bloodDef>
 		<fleshType>EntityFlesh</fleshType>
 		
 		<alwaysViolent>false</alwaysViolent>
