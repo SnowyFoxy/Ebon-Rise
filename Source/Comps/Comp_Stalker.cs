@@ -82,8 +82,6 @@ namespace EbonRiseV2.Comps
         public override void CompTick()
         {
             base.CompTick();
-            Log.Message(!Pawn.health.HasHediffsNeedingTendByPlayer() + " " + !HealthAIUtility.ShouldSeekMedicalRest(Pawn) 
-                        + " " + PawnUtility.ShouldSendNotificationAbout(Pawn));
             innerContainer.ThingOwnerTick(false);
 
             if (Pawn.Faction == Faction.OfPlayer && Pawn.needs.food.CurLevel == 0)
@@ -114,6 +112,7 @@ namespace EbonRiseV2.Comps
             if (!Swallowed) return;
             
             if (Find.TickManager.TicksGame % DigestTickInterval != 0) return;
+
 
             if (Find.TickManager.TicksGame % DigestTickInterval * 10 == 0)
             {

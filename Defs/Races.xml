@@ -12,8 +12,8 @@
 		<LeatherAmount>20</LeatherAmount>
 		<MeatAmount>70</MeatAmount>
 		<MinimumContainmentStrength>90</MinimumContainmentStrength>
-		<ArmorRating_Sharp>0.5</ArmorRating_Sharp>
-		<ArmorRating_Blunt>0.3</ArmorRating_Blunt>
+		<ArmorRating_Sharp>0.7</ArmorRating_Sharp>
+		<ArmorRating_Blunt>0.4</ArmorRating_Blunt>
 		<ArmorRating_Heat>0.2</ArmorRating_Heat>
 		<ToxicResistance>0.5</ToxicResistance>
 	</statBases>
@@ -22,7 +22,7 @@
 		<body>SF_RiftStalker_Body</body>
 		<baseBodySize>4</baseBodySize>
 		<baseHealthScale>3.6</baseHealthScale>
-		<bloodDef IsNull="True"/>
+		<bloodDef>Filth_DarkBlood</bloodDef>
 		<fleshType>EntityFlesh</fleshType>
 		
 		<alwaysViolent>false</alwaysViolent>
