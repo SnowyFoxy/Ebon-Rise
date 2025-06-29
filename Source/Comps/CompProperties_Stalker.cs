@@ -15,6 +15,18 @@ namespace EbonRiseV2.Comps
         [MustTranslate] public string messageDigestionCompleted;
 
         [MustTranslate] public string digestingInspector;
+        
+        [MustTranslate] public string furClumpDroppedLabel;
+        [MustTranslate] public string furClumpDroppedDesc;
+
+        [MustTranslate] public string slainLetterLabel;
+        [MustTranslate] public string slainLetterDesc;
+
+        [MustTranslate] public string stalkerSpottedLabel;
+        [MustTranslate] public string stalkerSpottedDesc;
+        
+        [MustTranslate] public string stalkerSensedLabel;
+        [MustTranslate] public string stalkerSensedDesc;
 
         public int completeDigestionDamage = 125;
 

@@ -185,14 +185,16 @@ namespace EbonRiseV2.Comps
                 if (sensed)
                 {
                     lastSensedLetterTick = Find.TickManager.TicksGame;
-                    Find.LetterStack.ReceiveLetter("Rift Stalker Sensed", pawn + " senses a Rift Stalker nearby!",
+                    Find.LetterStack.ReceiveLetter(StalkerProps.stalkerSensedLabel.Formatted(), 
+                        StalkerProps.stalkerSensedLabel.Formatted(pawn.Named("PAWN")),
                         LetterDefOf.ThreatSmall,
                         (Thing)pawn);
                 }
                 else
                 {
                     lastSeenLetterTick = Find.TickManager.TicksGame;
-                    Find.LetterStack.ReceiveLetter("Rift Stalker Spotted", pawn + " has spotted a Rift Stalker!",
+                    Find.LetterStack.ReceiveLetter(StalkerProps.stalkerSpottedLabel.Formatted(), 
+                        StalkerProps.stalkerSpottedLabel.Formatted(pawn.Named("PAWN")),
                         LetterDefOf.ThreatSmall,
                         (Thing)pawn);
                 }
@@ -265,8 +267,8 @@ namespace EbonRiseV2.Comps
 
         public override void Notify_Killed(Map prevMap, DamageInfo? dinfo = null)
         {
-            Find.LetterStack.ReceiveLetter("Rift Stalker slain",
-                "The Rift Stalker has returned to whatever world it came from. It will be back…",
+            Find.LetterStack.ReceiveLetter(StalkerProps.slainLetterLabel.Formatted(),
+                StalkerProps.slainLetterDesc.Formatted(),
                 LetterDefOf.NeutralEvent);
             AbortSwallow();
         }

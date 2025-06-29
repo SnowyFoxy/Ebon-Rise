@@ -44,8 +44,8 @@ namespace EbonRiseV2.Jobs
                 Thing furClump = ThingMaker.MakeThing(MiscDefOf.SF_FurClump);
                 furClump.TryGetComp<CompAnalyzableBiosignature>().biosignature = Comp.biosignature;
                 Thing spawnedFurClump = GenSpawn.Spawn(furClump, pawn.PositionHeld, pawn.Map);
-                Find.LetterStack.ReceiveLetter("Fur Clump", 
-                    "A fur clump has fallen from a fleeing Rift Stalker. It could be analyzed to track it down.", 
+                Find.LetterStack.ReceiveLetter(Comp.StalkerProps.furClumpDroppedLabel.Formatted(), 
+                    Comp.StalkerProps.furClumpDroppedDesc.Formatted(), 
                     LetterDefOf.NeutralEvent, spawnedFurClump, delayTicks: 600);
                 Comp.lastFurClumpTick = Find.TickManager.TicksGame;
             });

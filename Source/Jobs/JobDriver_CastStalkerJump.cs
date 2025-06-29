@@ -24,8 +24,9 @@ namespace EbonRiseV2.Jobs
                 if (comp == null) return;
                 if (pawn.Faction != Faction.OfPlayer)
                 {
-                    Find.LetterStack.ReceiveLetter("Rift Stalker Spotted", job.GetTarget(TargetIndex.A).Thing + " has spotted a Rift Stalker!",
-                        LetterDefOf.ThreatBig,
+                    Find.LetterStack.ReceiveLetter(comp.StalkerProps.stalkerSpottedLabel.Formatted(), 
+                        comp.StalkerProps.stalkerSpottedLabel.Formatted(job.GetTarget(TargetIndex.A).Thing.Named("PAWN")),
+                        LetterDefOf.ThreatSmall,
                         (Thing)pawn);
                 }
 

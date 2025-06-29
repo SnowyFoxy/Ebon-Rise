@@ -71,6 +71,17 @@
 			<messageEmergedCorpse>{PAWN_nameDef} emerged from the devourer's corpse.</messageEmergedCorpse>
 			<messageDigestionCompleted>The devourer has regurgitated {PAWN_nameDef}.</messageDigestionCompleted>
 			<digestingInspector>Digesting {PAWN_nameDef}: approximately {HOURS} hours left</digestingInspector>
+			<furClumpDroppedLabel>Fur Clump</furClumpDroppedLabel>
+			<furClumpDroppedDesc>A fur clump has fallen from a fleeing Rift Stalker. It could be analyzed to track it down.</furClumpDroppedDesc>
+			
+			<slainLetterLabel>Rift Stalker slain</slainLetterLabel>
+			<slainLetterDesc>The Rift Stalker has returned to whatever world it came from. It will be back…</slainLetterDesc>
+			
+			<stalkerSensedLabel>Rift Stalker Sensed</stalkerSensedLabel>
+			<stalkerSensedDesc>{PAWN_nameDef} has sensed a Rift Stalker!</stalkerSensedDesc>
+
+			<stalkerSpottedLabel>Rift Stalker Spotted</stalkerSpottedLabel>
+			<stalkerSpottedDesc>{PAWN_nameDef} has spotted a Rift Stalker!</stalkerSpottedDesc>
 			<completeDigestionDamage>200</completeDigestionDamage>
 			<bodySizeDigestTimeCurve>
 				<points>
