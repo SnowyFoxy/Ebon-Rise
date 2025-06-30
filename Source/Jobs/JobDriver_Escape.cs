@@ -37,10 +37,14 @@ namespace EbonRiseV2.Jobs
             };
             toil1.AddFinishAction(() =>
             {
-                if (Comp.lastFurClumpTick + 10000 > Find.TickManager.TicksGame || Find.AnalysisManager.TryGetAnalysisProgress(Comp.biosignature, out var details) && details.Satisfied)
+                Log.Message("Trying spawn! " + (Comp.lastFurClumpTick + 10000) + " > " + Find.TickManager.TicksGame + ", " + 
+                    Find.AnalysisManager.TryGetAnalysisProgress(Comp.biosignature, out var test));
+                if (Comp.lastFurClumpTick + 10000 > Find.TickManager.TicksGame || 
+                    Find.AnalysisManager.TryGetAnalysisProgress(Comp.biosignature, out var details) && details.Satisfied)
                 {
                     return;
                 }
+                Log.Message("Spawning!");
                 Thing furClump = ThingMaker.MakeThing(MiscDefOf.SF_FurClump);
                 furClump.TryGetComp<CompAnalyzableBiosignature>().biosignature = Comp.biosignature;
                 Thing spawnedFurClump = GenSpawn.Spawn(furClump, pawn.PositionHeld, pawn.Map);

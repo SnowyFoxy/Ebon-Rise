@@ -242,9 +242,17 @@ namespace EbonRiseV2.Comps
                     {
                         canTargetBuildings = false,
                         onlyTargetColonistsOrPrisonersOrSlaves = true,
-                        validator = t => !t.HasThing || t.Thing is not Pawn thing || !PrisonBreakUtility.IsPrisonBreaking(thing)
+                        validator = t => !t.HasThing || t.Thing is not Pawn thing || 
+                                         !PrisonBreakUtility.IsPrisonBreaking(thing) || 
+                                         // To prevent DD dragons from being feedable
+                                         !t.Thing.def.defName.Contains("Dragon")
                     }, target =>
                     {
+                        // Prevent selecting itself
+                        if (Pawn == target.Pawn)
+                        {
+                            return;
+                        }
                         selPawn.jobs.StartJob(
                             target == selPawn
                                 ? JobMaker.MakeJob(JobsDefOf.SF_Stalker_FeedStalkerSelf, Pawn)
@@ -405,6 +413,7 @@ namespace EbonRiseV2.Comps
             Scribe_Values.Look(ref startedDigest, "startedDigest");
             Scribe_Values.Look(ref biosignature, "biosignature");
             Scribe_Values.Look(ref lastFurClumpTick, "lastFurClumpTick");
+            Scribe_Values.Look(ref becomeInvisibleTick, "becomeInvisibleTick");
             Scribe_Values.Look(ref wasDrafted, "wasDrafted", defaultValue: false);
             Scribe_Deep.Look(ref innerContainer, "innerContainer", this);
         }

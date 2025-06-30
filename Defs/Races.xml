@@ -30,6 +30,8 @@
 		<thinkTreeConstant>DevourerConstant</thinkTreeConstant>
 		<intelligence>ToolUser</intelligence>		
 		<trainability>Advanced</trainability>
+		<hideTrainingTab>true</hideTrainingTab>
+		<showTrainables>false</showTrainables>
 
 		<needsRest>false</needsRest>
 		
@@ -40,8 +42,7 @@
 		<specificMeatDef>Meat_Twisted</specificMeatDef>
 		<leatherDef>Leather_Dread</leatherDef>
 		<hasGenders>false</hasGenders>
-		<!-- Todo patch it so the food need is added despite being None for foodType -->
-		<foodType>Liquor</foodType>
+		<foodType>CarnivoreAnimal</foodType>
 		<lifeExpectancy>200</lifeExpectancy>
 
 		<soundMeleeHitPawn>Pawn_Melee_SmallScratch_HitPawn</soundMeleeHitPawn>
