@@ -36,7 +36,6 @@
 		<needsRest>false</needsRest>
 		
 		<bleedRateFactor>0.75</bleedRateFactor>
-		<overrideShouldHaveAbilityTracker>true</overrideShouldHaveAbilityTracker>
 		
 		<isImmuneToInfections>true</isImmuneToInfections>
 		<specificMeatDef>Meat_Twisted</specificMeatDef>

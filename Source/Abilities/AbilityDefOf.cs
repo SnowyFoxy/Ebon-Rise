@@ -12,6 +12,7 @@ namespace EbonRiseV2.Abilities
         static AbilityDefOf()
         {
             DefOfHelper.EnsureInitializedInCtor(typeof(AbilityDefOf));
+            
         }
     }
 }

@@ -1,3 +1,6 @@
+using System.Collections;
+using System.Collections.Generic;
+using EbonRiseV2.Util;
 using RimWorld;
 using Verse;
 using Verse.AI;
@@ -15,27 +18,36 @@ namespace EbonRiseV2.Jobs
                 return null;
             }
             Job job1 = JobMaker.MakeJob(JobsDefOf.SF_Stalker_Escape, firstCell.Value, secondCell.Value);
-            job1.locomotionUrgency = LocomotionUrgency.Sprint;
             job1.canBashDoors = true;
             job1.canBashFences = true;
+            job1.locomotionUrgency = LocomotionUrgency.Jog;
             return job1;
         }
+        
+        
+        /* The escape code had to be reworked upon the update of 1.6
+         * 
+         * 
+         */
 
-        private IntVec3? FindEscapeCell(Pawn pawn)
+        public static IntVec3? FindEscapeCell(Pawn pawn)
         {
+
             IntVec3 escapeCell = RevenantUtility.FindEscapeCell(pawn);
             if (!escapeCell.IsValid)
                 return null;
-            using PawnPath path1 = pawn.Map.pathFinder.FindPath(pawn.Position, escapeCell, TraverseParms.For(pawn, mode: TraverseMode.PassDoors));
-            if (path1.Found) return escapeCell;
-            using PawnPath path2 = pawn.Map.pathFinder.FindPath(pawn.Position, escapeCell, TraverseParms.For(pawn, mode: TraverseMode.PassAllDestroyableThings));
-            Thing blocker = path2.FirstBlockingBuilding(out var cellBefore, pawn);
-            if (blocker != null)
+            
+            
+            if (CellFinder.TryFindRandomCellNear(pawn.Position, pawn.Map, 100, (IntVec3 x) => x.Standable(pawn.Map) &&              
+                                   RevenantUtility.NearbyHumanlikePawnCount(x, pawn.Map, 20f) == 0 &&
+                                   pawn.CanReach(x, PathEndMode.OnCell, Danger.Deadly),
+                    out var result))
             {
-                return null;
+                return result;
             }
-
-            return escapeCell;
+            return null;
+            
+            
         }
     }
 }

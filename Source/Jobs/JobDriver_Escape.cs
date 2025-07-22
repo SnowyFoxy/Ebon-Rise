@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using EbonRiseV2.Comps;
 using EbonRiseV2.Util;
 using RimWorld;
+using UnityEngine;
 using Verse;
 using Verse.AI;
 
@@ -21,8 +22,10 @@ namespace EbonRiseV2.Jobs
 
         protected override IEnumerable<Toil> MakeNewToils()
         {
+         
+                
             pawn.jobs.jobQueue.Clear(pawn, true);
-            Toil toil1 = Toils_Goto.GotoCell(TargetIndex.A, PathEndMode.OnCell);
+            Toil toil1 = Toils_Goto.GotoCell(TargetIndex.A, PathEndMode.OnCell); 
             toil1.tickAction += () =>
             {
                 if (Comp.Pawn.IsPsychologicallyInvisible())
