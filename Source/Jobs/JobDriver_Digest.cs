@@ -12,7 +12,7 @@ namespace EbonRiseV2.Jobs
 
         protected override IEnumerable<Toil> MakeNewToils()
         {
-            Toil toil1 = Toils_General.Wait(1000);
+          Toil toil1 = Toils_General.Wait(2000);
             yield return toil1;
         }
     }

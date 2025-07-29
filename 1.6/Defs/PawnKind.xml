@@ -9,7 +9,6 @@
 			The Cloaked Stalker appears from a shadowy rift before turning invisible, stalking pawns to feed its relentless hunger. However, there is an intelligence behind those eyes. Perhaps you can appease its hunger and gain its favor?</description>
 		<defaultFactionType>Entities</defaultFactionType>
 		<immuneToGameConditionEffects>true</immuneToGameConditionEffects>
-		
 		<combatPower>250</combatPower>
 		<canArriveManhunter>false</canArriveManhunter>
 		<overrideDebugActionCategory>Entity</overrideDebugActionCategory>

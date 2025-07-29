@@ -23,11 +23,14 @@ namespace EbonRiseV2.Comps
         private bool wasDrafted;
         private HediffComp_Invisibility invisibility;
         private BodyPartRecord[] targetting;
-
+        private float speedFactor;
+        
+        
         public int lastSeenLetterTick = -99999;
         public int lastSensedLetterTick = -99999;
         public int lastFurClumpTick = -99999;
         public int becomeInvisibleTick = -99999;
+        public int escapeSecondStageStartedTick = -99999;
 
         public bool Swallowed => SwallowedThing != null;
         public Pawn Pawn => parent as Pawn;
@@ -74,16 +77,19 @@ namespace EbonRiseV2.Comps
 
         public Comp_Stalker()
         {
+  
             innerContainer = new ThingOwner<Thing>(this);
+            
         }
 
+        public bool ShouldTickContents => true;
         public override void PostPostMake() => biosignature = Rand.Int;
-
+        
+        
         public override void CompTick()
         {
             base.CompTick();
-            innerContainer.ThingOwnerTick(false);
-
+            
             if (Pawn.Faction == Faction.OfPlayer && Pawn.needs.food.CurLevel == 0)
             {
                 // Leave the player's faction when their stomach is empty
