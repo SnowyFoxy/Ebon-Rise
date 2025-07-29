@@ -30,6 +30,7 @@ namespace EbonRiseV2.Comps
         public int lastSensedLetterTick = -99999;
         public int lastFurClumpTick = -99999;
         public int becomeInvisibleTick = -99999;
+        public int escapeSecondStageStartedTick = -99999;
 
         public bool Swallowed => SwallowedThing != null;
         public Pawn Pawn => parent as Pawn;

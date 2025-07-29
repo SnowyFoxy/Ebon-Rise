@@ -1,6 +1,5 @@
-using System.Collections;
-using System.Collections.Generic;
-using EbonRiseV2.Util;
+using System;
+using EbonRiseV2.Jobs;
 using RimWorld;
 using Verse;
 using Verse.AI;
@@ -11,43 +10,49 @@ namespace EbonRiseV2.Jobs
     {
         protected override Job TryGiveJob(Pawn pawn)
         {
-            var firstCell = FindEscapeCell(pawn);
-            var secondCell = FindEscapeCell(pawn);
-            if (firstCell == null || secondCell == null)
+            
+            //Validation check for Pawn -CKG
+            IntVec3 c = RevenantUtility.FindEscapeCell(pawn);
+            if (!c.IsValid)
             {
                 return null;
             }
-            Job job1 = JobMaker.MakeJob(JobsDefOf.SF_Stalker_Escape, firstCell.Value, secondCell.Value);
-            job1.canBashDoors = true;
-            job1.canBashFences = true;
-            job1.locomotionUrgency = LocomotionUrgency.Jog;
-            return job1;
-        }
-        
-        
-        /* The escape code had to be reworked upon the update of 1.6
-         * 
-         * 
-         */
 
-        public static IntVec3? FindEscapeCell(Pawn pawn)
-        {
-
-            IntVec3 escapeCell = RevenantUtility.FindEscapeCell(pawn);
-            if (!escapeCell.IsValid)
-                return null;
-            
-            
-            if (CellFinder.TryFindRandomCellNear(pawn.Position, pawn.Map, 100, (IntVec3 x) => x.Standable(pawn.Map) &&              
-                                   RevenantUtility.NearbyHumanlikePawnCount(x, pawn.Map, 20f) == 0 &&
-                                   pawn.CanReach(x, PathEndMode.OnCell, Danger.Deadly),
-                    out var result))
+            //Find the path for RS to move to, if it's blocked then it will bash the door down to escape
+            using (PawnPath pawnPath = pawn.Map.pathFinder.FindPathNow(pawn.Position, c, TraverseParms.For(pawn, Danger.Deadly, TraverseMode.PassDoors, false, false, false, true), null, PathEndMode.OnCell, null))
             {
-                return result;
+                if (!pawnPath.Found)
+                {
+                    using (PawnPath pawnPath2 = pawn.Map.pathFinder.FindPathNow(pawn.Position, c, TraverseParms.For(pawn, Danger.Deadly, TraverseMode.PassAllDestroyableThings, false, false, false, true), null, PathEndMode.OnCell, null))
+                    {
+                        IntVec3 cellBeforeBlocker;
+                        Thing thing = pawnPath2.FirstBlockingBuilding(out cellBeforeBlocker, pawn);
+                        if (thing != null)
+                        {
+                            // Try to create an attack job for the blocking building, Some of these checks are ignored -CKG
+                            Job job = JobMaker.MakeJob(JobDefOf.AttackMelee, thing);
+                            if (job != null)
+                            {
+                                job.maxNumMeleeAttacks = 99999;
+                                job.expiryInterval = 2000;
+                                job.canBashDoors = true;
+                                job.canBashFences = true;
+                                return job;
+                            }
+                        }
+                    }
+                }
             }
-            return null;
-            
-            
+
+            // Some of these checks don't work/are ignored - CKG
+            Job job2 = JobMaker.MakeJob(JobsDefOf.SF_Stalker_Escape, c);
+            job2.locomotionUrgency = LocomotionUrgency.Jog;
+            job2.canBashDoors = true;
+            job2.canBashFences = true;
+            job2.expiryInterval = 2000; 
+            job2.checkOverrideOnExpire = true; 
+            return job2;
         }
+        
     }
 }

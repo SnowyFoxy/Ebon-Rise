@@ -9,6 +9,7 @@
     <JobDef>
         <defName>SF_Stalker_Escape</defName>
         <driverClass>EbonRiseV2.Jobs.JobDriver_Escape</driverClass>
+        <suspendable>false</suspendable>
         <reportString>escaping</reportString>
     </JobDef>
     <JobDef>

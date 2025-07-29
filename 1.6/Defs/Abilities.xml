@@ -9,8 +9,7 @@
         <ai_IsOffensive>true</ai_IsOffensive>
         <aiCanUse>true</aiCanUse>
         <verbProperties>
-            <defaultCooldownTime>3.0</defaultCooldownTime>
-            <warmupTime>2.0</warmupTime>
+            <warmupTime>1.5</warmupTime>
             <verbClass>EbonRiseV2.Abilities.Ability_Swallow</verbClass>
             <label>Swallow</label>
             <range>9.9</range>
