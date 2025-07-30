@@ -12,6 +12,7 @@
 		<combatPower>250</combatPower>
 		<canArriveManhunter>false</canArriveManhunter>
 		<overrideDebugActionCategory>Entity</overrideDebugActionCategory>
+		<canOpenAnyDoor>true</canOpenAnyDoor>
 		<lifeStages>
 			<li>
 				<bodyGraphicData>

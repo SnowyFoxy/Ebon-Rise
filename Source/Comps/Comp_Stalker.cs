@@ -8,6 +8,14 @@ using UnityEngine;
 using Verse;
 using Verse.AI;
 using AbilityDefOf = EbonRiseV2.Abilities.AbilityDefOf;
+/*  Some Notes, to dos, ect.
+ *  
+ *  - Add severity based effects from malnutrition 
+ *  - have RS change combat stance to flee when caught
+ *  - add a new Hediff which makes RS slow down and cant go invisible when "disturbed from his meal"
+ *  
+ * 
+ */
 
 namespace EbonRiseV2.Comps
 {
@@ -88,7 +96,6 @@ namespace EbonRiseV2.Comps
         
         public override void CompTick()
         {
-            base.CompTick();
             
             if (Pawn.Faction == Faction.OfPlayer && Pawn.needs.food.CurLevel == 0)
             {
@@ -167,6 +174,22 @@ namespace EbonRiseV2.Comps
             }
 
             Pawn.needs.food.CurLevel += 0.1f;
+        }
+
+        public Hediff GetHediff(string defName)
+        {
+            Hediff hediff = null;
+            for (int i = 0; i < Pawn.health.hediffSet.hediffs.Count; i++)
+            {
+                if (Pawn.health.hediffSet.hediffs[i].def.defName == defName)
+                {
+                    hediff = Pawn.health.hediffSet.hediffs[i];
+                    return hediff;
+                }
+            }
+
+
+            return hediff;
         }
 
         private void CheckIfSeen(bool sensed)

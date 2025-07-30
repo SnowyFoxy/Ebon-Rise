@@ -37,34 +37,6 @@ namespace EbonRiseV2.Jobs
 
             escapeToil.tickAction = () =>
             {
-                var door = pawn.Position.GetDoor(pawn.Map) ?? lastBashedDoor;
-                if (door != null && !door.Destroyed)
-                {
-                    lastBashedDoor = door;
-                    lastBashTick = Find.TickManager.TicksGame;
-                    
-                    pawn.rotationTracker.FaceCell(door.Position);
-                    if (pawn.meleeVerbs.TryGetMeleeVerb(door) is Verb_MeleeAttack verb)
-                    {
-                        verb.TryStartCastOn(door);
-                    }
-                    
-                    door.TakeDamage(new DamageInfo(
-                        DamageDefOf.Blunt,
-                        pawn.GetStatValue(StatDefOf.MeleeDPS) * OneShotDoor,
-                        1f,
-                        instigator: pawn
-                    ));
-
-                    if (door.Destroyed)
-                    {
-                        lastBashedDoor = null;
-                        pawn.pather.StopDead();
-                        pawn.pather.StartPath(TargetA.Cell, PathEndMode.OnCell);
-                    }
-                    return;
-                }
-
 
                 if (!pawn.pather.Moving && Find.TickManager.TicksGame > lastBashTick + 30)
                 {
