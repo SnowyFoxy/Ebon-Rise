@@ -32,7 +32,9 @@ namespace EbonRiseV2.Comps
         private HediffComp_Invisibility invisibility;
         private BodyPartRecord[] targetting;
         private float speedFactor;
-        
+
+        public byte malnutrition;
+
         
         public int lastSeenLetterTick = -99999;
         public int lastSensedLetterTick = -99999;
@@ -96,7 +98,7 @@ namespace EbonRiseV2.Comps
         
         public override void CompTick()
         {
-            
+            Log.Message(Pawn.needs.food.CurLevel);
             if (Pawn.Faction == Faction.OfPlayer && Pawn.needs.food.CurLevel == 0)
             {
                 // Leave the player's faction when their stomach is empty
@@ -104,7 +106,7 @@ namespace EbonRiseV2.Comps
                 stalkerState = StalkerState.Stalking;
                 Pawn.jobs.EndCurrentJob(JobCondition.InterruptForced);
             }
-
+            hungerCheck();
             if (Find.TickManager.TicksGame > becomeInvisibleTick)
             {
                 if (stalkerState == StalkerState.Escaping)
@@ -174,6 +176,34 @@ namespace EbonRiseV2.Comps
             }
 
             Pawn.needs.food.CurLevel += 0.1f;
+        }
+
+        public void hungerCheck()
+        {
+            Hediff Malnutrition = GetHediff("Malnutrition");
+            float hunger = Pawn.needs.food.CurLevel;
+            Log.Message("Debug: Hunger checked");
+            if (Pawn.needs.food.CurLevel <= 0.1f)
+            {
+                if (SwallowedPawn != null)
+                {
+                    return;
+                }
+                if (Pawn.jobs.curJob.def.defName == "SF_Stalker_Swallow")
+                { 
+                    return; 
+                }
+                Log.Message(Pawn.jobs.curJob.def.defName);
+                Log.Message("Debug: Belly Empty. Feast Mode, activated. #Hungry. FeedMeMore.com ");
+                Pawn.jobs.StartJob(JobMaker.MakeJob(JobsDefOf.SF_Stalker_Swallow), JobCondition.InterruptForced);
+            }
+
+
+        }
+        
+        public void GetFood()
+        {
+            Pawn.jobs.StartJob(JobMaker.MakeJob(JobDefOf.Goto));
         }
 
         public Hediff GetHediff(string defName)

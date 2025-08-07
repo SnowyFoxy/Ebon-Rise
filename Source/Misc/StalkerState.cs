@@ -5,6 +5,7 @@ namespace EbonRiseV2.Util
         Stalking,
         Swallowing,
         Escaping,
-        Digesting
+        Digesting,
+        Hunting
     }
 }

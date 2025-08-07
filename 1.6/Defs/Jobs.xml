@@ -34,4 +34,10 @@
         <carryThingAfterJob>true</carryThingAfterJob>
         <dropThingBeforeJob>false</dropThingBeforeJob>
     </JobDef>
+    <JobDef>
+        <defName>SF_Hunt</defName>
+        <driverClass>EbonRiseV2.Jobs.JobDriver_Hunt</driverClass>
+        <reportString>Hunting TargetA.</reportString>
+        <allowOpportunisticPrefix>true</allowOpportunisticPrefix>
+    </JobDef>
 </Defs>

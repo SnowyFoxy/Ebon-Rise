@@ -11,6 +11,7 @@ namespace EbonRiseV2.Jobs
         public static JobDef SF_Stalker_Digest;
         public static JobDef SF_Stalker_FeedStalker;
         public static JobDef SF_Stalker_FeedStalkerSelf;
+        public static JobDef SF_Hunt;
         
         static JobsDefOf()
         {
