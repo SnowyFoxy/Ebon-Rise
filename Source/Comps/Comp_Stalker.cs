@@ -98,7 +98,13 @@ namespace EbonRiseV2.Comps
         
         public override void CompTick()
         {
-            Log.Message(Pawn.needs.food.CurLevel);
+
+            /*
+             *  theres a method which is never called, in here, that will be fixed in a later update - Coziii
+             * 
+             * 
+             */
+            //Log.Message(Pawn.needs.food.CurLevel);
             if (Pawn.Faction == Faction.OfPlayer && Pawn.needs.food.CurLevel == 0)
             {
                 // Leave the player's faction when their stomach is empty
@@ -106,7 +112,7 @@ namespace EbonRiseV2.Comps
                 stalkerState = StalkerState.Stalking;
                 Pawn.jobs.EndCurrentJob(JobCondition.InterruptForced);
             }
-            hungerCheck();
+            //hungerCheck();
             if (Find.TickManager.TicksGame > becomeInvisibleTick)
             {
                 if (stalkerState == StalkerState.Escaping)
